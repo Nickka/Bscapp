@@ -30,6 +30,7 @@
         </provider>
         <activity android:name=".CamActivity"/>
         <activity android:name=".SendActivity"/>
+        <activity android:name=".CardActivity"/>
 
     </application>
     <uses-permission android:name="android.permission.CAMERA" />

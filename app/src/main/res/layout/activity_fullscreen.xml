@@ -41,7 +41,8 @@
                 android:layout_weight="1"
                 android:text="Tryk her for at starte"
                 android:textColor="#8affef"
-                android:clickable="true" />
+                android:clickable="true"
+                android:textColorLink="?attr/colorSwitchThumbNormal" />
 
         </LinearLayout>
     </FrameLayout>

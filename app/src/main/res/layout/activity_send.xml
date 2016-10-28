@@ -39,4 +39,12 @@
         android:id="@+id/checkBox3"
         android:textAlignment="center"
         android:textColorLink="?attr/colorSwitchThumbNormal" />
+
+    <Button
+        android:text="Send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Sbutton"
+        android:layout_marginTop="220dp"
+        android:visibility="invisible"/>
 </LinearLayout>

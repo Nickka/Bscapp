@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.R.attr.angle;
 import static android.app.Activity.RESULT_OK;
 import static com.example.thinknick.bscapp.FullscreenActivity.REQUEST_IMAGE_CAPTURE;
 
@@ -31,13 +33,21 @@ public class CamActivity extends Activity {
     private String mCurrentPhotoPath;
     private ImageView mImageView;
     private View changeView;
+    public EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
         changeView = findViewById(R.id.vButton);
         dispatchTakePictureIntent();
+        editText = (EditText)findViewById(R.id.editText);
 
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText.setText("");
+            }
+        });
 
         changeView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +105,7 @@ public class CamActivity extends Activity {
 
                 mImageView = (ImageView)findViewById(R.id.imageView2);
                 mImageView.setImageBitmap(mImageBitmap);
-
+                mImageView.setRotation(180);
             } catch (IOException e) {
                 e.printStackTrace();
             }
