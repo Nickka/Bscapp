@@ -73,12 +73,30 @@ public class CameraActivity extends Activity {
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
+    private File createImageFile2() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             try {
                 mImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
-                createImageFromBitmap(mImageBitmap);
+                //createImageFromBitmap(mImageBitmap);
+                //createImageBMP(mImageBitmap);
+                cImageFromBitmap(mImageBitmap);
                 //mImageView = (ImageView)findViewById(R.id.imageView);
                 //mImageView.setImageBitmap(mImageBitmap);
                 //mImageView.setRotation(180);
@@ -86,6 +104,36 @@ public class CameraActivity extends Activity {
                 e.printStackTrace();
             }
         }
+        Bundle Result = getIntent().getExtras();
+        int test = Result.getInt("test");
+            if(test == 1) {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("result", 1);
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        }
+        if(test == 2) {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("result", 2);
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        }
+
+    }
+    public String cImageFromBitmap(Bitmap bitmap){
+        String fileName = "myImage";//no .png or .jpg needed
+        try {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
+            fo.write(bytes.toByteArray());
+            // remember close file output
+            fo.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fileName = null;
+        }
+        return fileName;
     }
     public String createImageFromBitmap(Bitmap bmp) {
         /*
@@ -113,12 +161,27 @@ public class CameraActivity extends Activity {
             bmp.recycle();
 
             //Pop intent
-            Intent in1 = new Intent(this, CardActivity.class);
-            in1.putExtra("image", filename);
-            startActivity(in1);
+            Intent card = new Intent(this, CardActivity.class);
+            card.putExtra("image", filename);
+            startActivity(card);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String createImageBMP(Bitmap bitmap){
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] bytes = stream.toByteArray();
+            Intent intent = new Intent(this, CardActivity.class);
+            intent.putExtra("bitmapbytes", bytes);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 }

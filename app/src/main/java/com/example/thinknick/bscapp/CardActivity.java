@@ -33,6 +33,8 @@ import static java.security.AccessController.getContext;
 
 public class CardActivity extends Activity {
     Bitmap bmp = null;
+    Bitmap bmp2;
+    Bitmap bitmap;
 
     View pButton1, pButton2;
     private String mCurrentPhotoPath;
@@ -50,10 +52,16 @@ public class CardActivity extends Activity {
         pButton2 = findViewById(R.id.pButton2);
         pButton2.setOnClickListener(onClickListener);
 
+        //Bundle extras = getIntent().getExtras();
+        //byte[] byteArray = extras.getByteArray("bitmapbytes");
+        //bmp2 = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
 
     }
+
+
     public void returnImage() {
-        Intent cam = new Intent(CardActivity.this, CameraActivity.class);
+        Intent cam = new Intent(this, CameraActivity.class);
         startActivity(cam);
         String filename = getIntent().getStringExtra("image");
         try {
@@ -65,35 +73,61 @@ public class CardActivity extends Activity {
         }
 
     }
+    public void returnImage2() {
+
+        try {
+            bitmap = BitmapFactory.decodeStream(this.openFileInput("myImage"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+
+            case (1): {
+                returnImage2();
+                mImageView = (ImageView) findViewById(R.id.imageView);
+                mImageView.setImageBitmap(bitmap);
+                mImageView.setRotation(180);
+            }
+            break;
+
+            case (2): {
+                returnImage2();
+                mImageView = (ImageView) findViewById(R.id.imageView2);
+                mImageView.setImageBitmap(bitmap);
+                mImageView.setRotation(180);
+            }
+            break;
+        }
+    }
     //BAD PRACTISE MED SWITCHES, NOTE TIL NICKLAS TO READ UP ON BUT FUCK IT RIGHT NOW
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.pButton1:
-                    returnImage();
-                    //Bitmap bitmap = BitmapFactory.decodeStream(cam.openFileInput("myImage"));
-                    mImageView = (ImageView)findViewById(R.id.imageView);
-                    mImageView.setImageBitmap(bmp);
-                    mImageView.setRotation(180);
-                    mImageView.setVisibility(View.VISIBLE);
-                    break;
+                        Intent cam = new Intent(CardActivity.this, CameraActivity.class);
+                        cam.putExtra("test",1);
+                    startActivityForResult(cam, 1);
+
+                        break;
                 //Bitmap ER parceable, men filelimit er 1 mb, gonna fuck up
                 case R.id.pButton2:
+                    Intent cam2 = new Intent(CardActivity.this, CameraActivity.class);
+                    cam2.putExtra("test",2);
+                    startActivityForResult(cam2, 2);
 
-                    returnImage();
-                    //Bitmap bitmap = BitmapFactory.decodeStream(cam.openFileInput("myImage"));
-                    mImageView = (ImageView)findViewById(R.id.imageView2);
-                    mImageView.setImageBitmap(bmp);
-                    mImageView.setRotation(180);
-                    mImageView.setVisibility(View.VISIBLE);
                     break;
             }
         }
 
 
     };
-
-
 
 }
