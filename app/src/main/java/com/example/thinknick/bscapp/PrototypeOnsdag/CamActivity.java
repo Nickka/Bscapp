@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.thinknick.bscapp.Andet.SendActivity;
 import com.example.thinknick.bscapp.R;
@@ -57,8 +58,10 @@ public class CamActivity extends Activity {
         changeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent SMessage = new Intent(CamActivity.this, SendActivity.class);
+                Intent SMessage = new Intent(CamActivity.this, FullscreenActivity.class);
                 startActivity(SMessage);
+                Toast.makeText(CamActivity.this, "Sendt til Magnus og Julie", Toast.LENGTH_LONG).show();
+
             }
         });
 

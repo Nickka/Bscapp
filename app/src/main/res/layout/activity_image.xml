@@ -26,11 +26,13 @@
             android:textColorLink="?attr/colorSwitchThumbNormal" />
 
         <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher"
-        android:id="@+id/imageView2"
-        android:layout_weight="0.89" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@color/cardview_shadow_end_color"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/imageView2" />
 
 
     </RelativeLayout>
