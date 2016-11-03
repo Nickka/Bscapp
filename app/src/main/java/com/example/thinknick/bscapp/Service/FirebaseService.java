@@ -3,6 +3,17 @@ package com.example.thinknick.bscapp.Service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -20,6 +31,9 @@ public class FirebaseService extends IntentService {
     // TODO: Rename parameters
     private static final String EXTRA_PARAM1 = "com.example.thinknick.bscapp.Service.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.example.thinknick.bscapp.Service.extra.PARAM2";
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReferenceFromUrl("gs://bscapp-f1436.appspot.com/pics/");
+    StorageReference mountainsRef = storageRef.child("mountains.jpg");
 
     public FirebaseService() {
         super("FirebaseService");
@@ -87,5 +101,30 @@ public class FirebaseService extends IntentService {
     private void handleActionBaz(String param1, String param2) {
         // TODO: Handle action Baz
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+    private void UploadPicToFirebase(){
+
+        // Get the data from an ImageView as bytes
+       /* mImageView.setDrawingCacheEnabled(true);
+        mImageView.buildDrawingCache();
+        Bitmap bitmap = mImageView.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mountainsRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                System.out.println("not ok");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                System.out.println("helt ok");
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        });
+*/
     }
 }

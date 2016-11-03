@@ -1,4 +1,4 @@
-package com.example.thinknick.bscapp.Activities;
+package com.example.thinknick.bscapp.Activities.RetiredActivities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.thinknick.bscapp.Activities.CameraActivity;
 import com.example.thinknick.bscapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,7 +30,7 @@ import static com.example.thinknick.bscapp.R.id.imageView;
 
 
 
-public class CardActivity extends Activity {
+public class OldCardActivity extends Activity {
     Bitmap bmp = null;
     Bitmap bmp2;
     Bitmap bitmap;
@@ -49,7 +50,7 @@ public class CardActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_card);
+        setContentView(R.layout.old_activity_card);
         pButton1 = findViewById(R.id.pButton1);
         pButton1.setOnClickListener(onClickListener);
         pButton2 = findViewById(R.id.pButton2);
@@ -120,14 +121,14 @@ public class CardActivity extends Activity {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.pButton1:
-                        Intent cam = new Intent(CardActivity.this, CameraActivity.class);
+                        Intent cam = new Intent(OldCardActivity.this, CameraActivity.class);
                         cam.putExtra("test",1);
                     startActivityForResult(cam, 1);
 
                         break;
                 //Bitmap ER parceable, men filelimit er 1 mb, gonna fuck up
                 case R.id.pButton2:
-                    //Intent cam2 = new Intent(CardActivity.this, CameraActivity.class);
+                    //Intent cam2 = new Intent(OldCardActivity.this, CameraActivity.class);
                     //cam2.putExtra("test",2);
                     //startActivityForResult(cam2, 2);
                     System.out.println("ok");

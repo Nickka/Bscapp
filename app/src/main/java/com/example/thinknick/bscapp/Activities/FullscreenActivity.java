@@ -45,12 +45,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private boolean mVisible;
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-    private Bitmap mImageBitmap;
-    private String mCurrentPhotoPath;
-    private ImageView mImageView;
-    private ViewSwitcher switcher;
-    private static final int REFRESH_SCREEN = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +68,7 @@ public class FullscreenActivity extends AppCompatActivity {
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent Intent2 = new Intent(FullscreenActivity.this, CardActivity.class);
+                Intent Intent2 = new Intent(FullscreenActivity.this, ScrapBActivity.class);
                 startActivity(Intent2);
             }
         });

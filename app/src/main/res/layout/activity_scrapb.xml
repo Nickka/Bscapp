@@ -8,6 +8,12 @@
     android:background="#0099cc"
     android:weightSum="1">
 
+    <Button
+        android:text="Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button3" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="350dp"

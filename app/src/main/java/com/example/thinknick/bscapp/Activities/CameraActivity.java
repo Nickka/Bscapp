@@ -11,6 +11,9 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.widget.ImageView;
 
+import com.example.thinknick.bscapp.Activities.RetiredActivities.OldCardActivity;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -156,7 +159,7 @@ public class CameraActivity extends Activity {
             bmp.recycle();
 
             //Pop intent
-            Intent card = new Intent(this, CardActivity.class);
+            Intent card = new Intent(this, OldCardActivity.class);
             card.putExtra("image", filename);
             startActivity(card);
         } catch (Exception e) {
@@ -170,7 +173,7 @@ public class CameraActivity extends Activity {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bytes = stream.toByteArray();
-            Intent intent = new Intent(this, CardActivity.class);
+            Intent intent = new Intent(this, OldCardActivity.class);
             intent.putExtra("bitmapbytes", bytes);
             startActivity(intent);
         } catch (Exception e) {
