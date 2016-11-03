@@ -35,7 +35,7 @@ public class CamActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image);
+        setContentView(R.layout.CamActivity_Layout);
         changeView = findViewById(R.id.vButton);
         dispatchTakePictureIntent();
         editText = (EditText)findViewById(R.id.editText);
