@@ -1,4 +1,4 @@
-package com.example.thinknick.bscapp;
+package com.example.thinknick.bscapp.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.widget.ImageView;
 
 import android.provider.MediaStore;
 import android.widget.ViewSwitcher;
+
+import com.example.thinknick.bscapp.R;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

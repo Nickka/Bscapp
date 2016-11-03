@@ -1,7 +1,6 @@
-package com.example.thinknick.bscapp;
+package com.example.thinknick.bscapp.Activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -9,31 +8,55 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.thinknick.bscapp.R;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.example.thinknick.bscapp.FullscreenActivity.REQUEST_IMAGE_CAPTURE;
-import static com.example.thinknick.bscapp.FullscreenActivity.REQUEST_TAKE_PHOTO;
-
 /**
- * Created by ThinkNick on 30-10-2016.
+ * Created by ThinkNick on 26-10-2016.
  */
 
-public class CameraActivity extends Activity {
+public class CamActivity extends Activity {
+    static final int REQUEST_TAKE_PHOTO = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    private Bitmap mImageBitmap;
     private String mCurrentPhotoPath;
     private ImageView mImageView;
-    private Bitmap mImageBitmap;
+    private View changeView;
+    public EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_image);
+        changeView = findViewById(R.id.vButton);
         dispatchTakePictureIntent();
+        editText = (EditText)findViewById(R.id.editText);
+
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText.setText("");
+            }
+        });
+
+        changeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent SMessage = new Intent(CamActivity.this, SendActivity.class);
+                startActivity(SMessage);
+            }
+        });
     }
-    public void dispatchTakePictureIntent() {
+
+    private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -76,47 +99,16 @@ public class CameraActivity extends Activity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             try {
                 mImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
-                createImageFromBitmap(mImageBitmap);
-                //mImageView = (ImageView)findViewById(R.id.imageView);
-                //mImageView.setImageBitmap(mImageBitmap);
-                //mImageView.setRotation(180);
+
+
+                mImageView = (ImageView)findViewById(R.id.imageView2);
+                mImageView.setImageBitmap(mImageBitmap);
+                mImageView.setRotation(180);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
-    public String createImageFromBitmap(Bitmap bmp) {
-        /*
-        String fileName = "myImage";//no .png or .jpg needed
-        try {
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
-            fo.write(bytes.toByteArray());
-            // remember close file output
-            fo.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            fileName = null;
-        }
-        return fileName;*/
-        try {
-            //Write file
-            String filename = "bitmap.png";
-            FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
-            //Cleanup
-            stream.close();
-            bmp.recycle();
 
-            //Pop intent
-            Intent in1 = new Intent(this, CardActivity.class);
-            in1.putExtra("image", filename);
-            startActivity(in1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }
