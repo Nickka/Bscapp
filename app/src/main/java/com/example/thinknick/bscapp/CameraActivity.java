@@ -111,7 +111,7 @@ public class CameraActivity extends Activity {
             bmp.recycle();
 
             //Pop intent
-            Intent in1 = new Intent(this, ScrapbookActivity.class);
+            Intent in1 = new Intent(this, CardActivity.class);
             in1.putExtra("image", filename);
             startActivity(in1);
         } catch (Exception e) {

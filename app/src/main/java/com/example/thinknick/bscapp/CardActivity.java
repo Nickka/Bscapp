@@ -14,7 +14,7 @@ import java.io.FileInputStream;
  * Created by ThinkNick on 28-10-2016.
  */
 
-public class ScrapbookActivity extends Activity {
+public class CardActivity extends Activity {
     Bitmap bmp = null;
 
     View pButton1, pButton2;
@@ -36,7 +36,7 @@ public class ScrapbookActivity extends Activity {
 
     }
     public void returnImage() {
-        Intent cam = new Intent(ScrapbookActivity.this, CameraActivity.class);
+        Intent cam = new Intent(CardActivity.this, CameraActivity.class);
         startActivity(cam);
         String filename = getIntent().getStringExtra("image");
         try {

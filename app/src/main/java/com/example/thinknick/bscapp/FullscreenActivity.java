@@ -71,7 +71,7 @@ public class FullscreenActivity extends AppCompatActivity {
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent Intent2 = new Intent(FullscreenActivity.this, ScrapbookActivity.class);
+                Intent Intent2 = new Intent(FullscreenActivity.this, CardActivity.class);
                 startActivity(Intent2);
             }
         });
