@@ -8,11 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
 import android.widget.ImageView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -113,7 +111,7 @@ public class CameraActivity extends Activity {
             bmp.recycle();
 
             //Pop intent
-            Intent in1 = new Intent(this, CardActivity.class);
+            Intent in1 = new Intent(this, ScrapbookActivity.class);
             in1.putExtra("image", filename);
             startActivity(in1);
         } catch (Exception e) {

@@ -28,9 +28,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
-        <activity android:name=".CamActivity"/>
+
         <activity android:name=".SendActivity"/>
-        <activity android:name=".CardActivity"/>
+        <activity android:name=".ScrapbookActivity"/>
         <activity android:name=".CameraActivity"/>
 
     </application>

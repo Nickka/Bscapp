@@ -1,37 +1,20 @@
 package com.example.thinknick.bscapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Camera;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import static com.example.thinknick.bscapp.FullscreenActivity.REQUEST_IMAGE_CAPTURE;
-import static com.example.thinknick.bscapp.FullscreenActivity.REQUEST_TAKE_PHOTO;
-import static java.security.AccessController.getContext;
 
 /**
  * Created by ThinkNick on 28-10-2016.
  */
 
-public class CardActivity extends Activity {
+public class ScrapbookActivity extends Activity {
     Bitmap bmp = null;
 
     View pButton1, pButton2;
@@ -53,7 +36,7 @@ public class CardActivity extends Activity {
 
     }
     public void returnImage() {
-        Intent cam = new Intent(CardActivity.this, CameraActivity.class);
+        Intent cam = new Intent(ScrapbookActivity.this, CameraActivity.class);
         startActivity(cam);
         String filename = getIntent().getStringExtra("image");
         try {

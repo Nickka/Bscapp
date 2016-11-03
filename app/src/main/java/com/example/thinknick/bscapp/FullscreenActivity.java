@@ -7,23 +7,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Switch;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.widget.ViewSwitcher;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -82,7 +71,7 @@ public class FullscreenActivity extends AppCompatActivity {
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent Intent2 = new Intent(FullscreenActivity.this, CardActivity.class);
+                Intent Intent2 = new Intent(FullscreenActivity.this, ScrapbookActivity.class);
                 startActivity(Intent2);
             }
         });
