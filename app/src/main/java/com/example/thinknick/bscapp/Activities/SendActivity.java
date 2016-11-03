@@ -1,14 +1,14 @@
-package com.example.thinknick.bscapp;
+package com.example.thinknick.bscapp.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
+
+import com.example.thinknick.bscapp.R;
 
 /**
  * Created by ThinkNick on 26-10-2016.

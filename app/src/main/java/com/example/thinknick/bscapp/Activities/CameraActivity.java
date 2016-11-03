@@ -1,4 +1,4 @@
-package com.example.thinknick.bscapp;
+package com.example.thinknick.bscapp.Activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
 import android.widget.ImageView;
 
@@ -18,9 +17,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static com.example.thinknick.bscapp.FullscreenActivity.REQUEST_IMAGE_CAPTURE;
-import static com.example.thinknick.bscapp.FullscreenActivity.REQUEST_TAKE_PHOTO;
 
 /**
  * Created by ThinkNick on 30-10-2016.
@@ -53,7 +49,7 @@ public class CameraActivity extends Activity {
                         "com.example.android.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                startActivityForResult(takePictureIntent, FullscreenActivity.REQUEST_TAKE_PHOTO);
             }
         }
     }
@@ -91,7 +87,7 @@ public class CameraActivity extends Activity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == FullscreenActivity.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             try {
                 mImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
                 //createImageFromBitmap(mImageBitmap);

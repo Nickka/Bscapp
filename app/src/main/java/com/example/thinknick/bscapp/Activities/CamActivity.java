@@ -1,7 +1,6 @@
-package com.example.thinknick.bscapp;
+package com.example.thinknick.bscapp.Activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,16 +12,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.io.ByteArrayOutputStream;
+import com.example.thinknick.bscapp.R;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static android.R.attr.angle;
-import static android.app.Activity.RESULT_OK;
-import static com.example.thinknick.bscapp.FullscreenActivity.REQUEST_IMAGE_CAPTURE;
 
 /**
  * Created by ThinkNick on 26-10-2016.
