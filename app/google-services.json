@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "405157169895",
+    "firebase_url": "https://bscapp-f1436.firebaseio.com",
+    "project_id": "bscapp-f1436",
+    "storage_bucket": "bscapp-f1436.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405157169895:android:bec83a4506cb20a9",
+        "android_client_info": {
+          "package_name": "com.example.thinknick.bscapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405157169895-s5a3dsk8ob02nddljmnllmbktt0fkqe2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJty2iScu9WWCW41eNzGEWIGjNx9UF6ec"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,11 +10,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,24 +31,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.thinknick.bscapp.FullscreenActivity.REQUEST_IMAGE_CAPTURE;
-import static com.example.thinknick.bscapp.FullscreenActivity.REQUEST_TAKE_PHOTO;
-import static java.security.AccessController.getContext;
+import static android.R.attr.button;
+import static com.example.thinknick.bscapp.R.id.imageView;
 
 /**
  * Created by ThinkNick on 28-10-2016.
  */
+
+
 
 public class CardActivity extends Activity {
     Bitmap bmp = null;
     Bitmap bmp2;
     Bitmap bitmap;
 
-    View pButton1, pButton2;
+    Button sButton, sButton2;
+    View pButton1, pButton2, sButton3;
     private String mCurrentPhotoPath;
     private ImageView mImageView, mImageView2;
     private Bitmap mImageBitmap;
 
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReferenceFromUrl("gs://bscapp-f1436.appspot.com/pics/");
+    StorageReference mountainsRef = storageRef.child("mountains.jpg");
+    StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
 
 
     @Override
@@ -51,7 +65,12 @@ public class CardActivity extends Activity {
         pButton1.setOnClickListener(onClickListener);
         pButton2 = findViewById(R.id.pButton2);
         pButton2.setOnClickListener(onClickListener);
-
+        sButton = (Button) findViewById(R.id.vButton);
+        sButton.setOnClickListener(onClickListener);
+        sButton2 = (Button) findViewById(R.id.button2);
+        sButton2.setOnClickListener(onClickListener);
+        sButton3 = findViewById(R.id.button2);
+        sButton3.setOnClickListener(onClickListener);
         //Bundle extras = getIntent().getExtras();
         //byte[] byteArray = extras.getByteArray("bitmapbytes");
         //bmp2 = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
@@ -91,7 +110,7 @@ public class CardActivity extends Activity {
 
             case (1): {
                 returnImage2();
-                mImageView = (ImageView) findViewById(R.id.imageView);
+                mImageView = (ImageView) findViewById(imageView);
                 mImageView.setImageBitmap(bitmap);
                 mImageView.setRotation(180);
             }
@@ -119,9 +138,13 @@ public class CardActivity extends Activity {
                         break;
                 //Bitmap ER parceable, men filelimit er 1 mb, gonna fuck up
                 case R.id.pButton2:
-                    Intent cam2 = new Intent(CardActivity.this, CameraActivity.class);
-                    cam2.putExtra("test",2);
-                    startActivityForResult(cam2, 2);
+                    //Intent cam2 = new Intent(CardActivity.this, CameraActivity.class);
+                    //cam2.putExtra("test",2);
+                    //startActivityForResult(cam2, 2);
+                    System.out.println("ok");
+                    UploadFirebase();
+                    break;
+                case R.id.sButton:
 
                     break;
             }
@@ -130,4 +153,28 @@ public class CardActivity extends Activity {
 
     };
 
+    private void UploadFirebase(){
+// Get the data from an ImageView as bytes
+        mImageView.setDrawingCacheEnabled(true);
+        mImageView.buildDrawingCache();
+        Bitmap bitmap = mImageView.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mountainsRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                System.out.println("not ok");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                System.out.println("helt ok");
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        });
+
+    }
 }
