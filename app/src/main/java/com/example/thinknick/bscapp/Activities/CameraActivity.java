@@ -11,7 +11,6 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.widget.ImageView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
