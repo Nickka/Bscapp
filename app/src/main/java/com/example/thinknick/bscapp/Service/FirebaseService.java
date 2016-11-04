@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,8 +33,11 @@ public class FirebaseService extends IntentService {
     private static final String EXTRA_PARAM1 = "com.example.thinknick.bscapp.Service.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.example.thinknick.bscapp.Service.extra.PARAM2";
     FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference storageRef = storage.getReferenceFromUrl("gs://bscapp-f1436.appspot.com/pics/");
+    StorageReference storageRef = storage.getReferenceFromUrl("gs://bscapp-6b91c.appspot.com/");
     StorageReference mountainsRef = storageRef.child("mountains.jpg");
+    Bundle extras;
+
+
 
     public FirebaseService() {
         super("FirebaseService");
@@ -63,6 +67,7 @@ public class FirebaseService extends IntentService {
     // TODO: Customize helper method
     public static void startActionBaz(Context context, String param1, String param2) {
         Intent intent = new Intent(context, FirebaseService.class);
+
         intent.setAction(ACTION_BAZ);
         intent.putExtra(EXTRA_PARAM1, param1);
         intent.putExtra(EXTRA_PARAM2, param2);
@@ -71,6 +76,9 @@ public class FirebaseService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
+        extras = (Bundle) intent.getExtras().get("picture");
+        uploadPicToFirebase();
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_FOO.equals(action)) {
@@ -102,15 +110,15 @@ public class FirebaseService extends IntentService {
         // TODO: Handle action Baz
         throw new UnsupportedOperationException("Not yet implemented");
     }
-    private void UploadPicToFirebase(){
+    private void uploadPicToFirebase(){
 
         // Get the data from an ImageView as bytes
-       /* mImageView.setDrawingCacheEnabled(true);
+        /*mImageView.setDrawingCacheEnabled(true);
         mImageView.buildDrawingCache();
         Bitmap bitmap = mImageView.getDrawingCache();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
+        */
+        //Bundle extras = getIntent().getExtras();
+        byte[] data = extras.getByteArray("bitmap");
 
         UploadTask uploadTask = mountainsRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -125,6 +133,6 @@ public class FirebaseService extends IntentService {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
             }
         });
-*/
+
     }
 }

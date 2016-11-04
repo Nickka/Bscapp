@@ -8,14 +8,24 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.thinknick.bscapp.Activities.RetiredActivities.SendActivity;
 import com.example.thinknick.bscapp.R;
+import com.example.thinknick.bscapp.Service.FirebaseService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -38,10 +48,14 @@ public class ScrapBActivity extends Activity {
     View changeView, button3;
     public EditText editText;
     Bitmap bitmap;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+
         setContentView(R.layout.activity_scrapb);
         changeView = findViewById(R.id.vButton);
         editText = (EditText)findViewById(R.id.editText);
@@ -61,15 +75,68 @@ public class ScrapBActivity extends Activity {
             }
         });
 
+        signInAnonymously();
 
         changeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent SMessage = new Intent(ScrapBActivity.this, SendActivity.class);
-                startActivity(SMessage);
+                sendToFB();
+                Toast.makeText(ScrapBActivity.this, "Cool!", Toast.LENGTH_SHORT).show();
             }
         });
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                   // Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                  //  Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+    private void signInAnonymously() {
+      //  showProgressDialog();
+        // [START signin_anonymously]
+        mAuth.signInAnonymously()
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                      //  Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                          //  Log.w(TAG, "signInAnonymously", task.getException());
+                            Toast.makeText(ScrapBActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // [START_EXCLUDE]
+                       // hideProgressDialog();
+                        // [END_EXCLUDE]
+                    }
+                });
+        // [END signin_anonymously]
+    }
+
     public void returnImage2() {
 
         try {
@@ -94,5 +161,19 @@ public class ScrapBActivity extends Activity {
             break;
         }
     }
+    public void sendToFB(){
+        mImageView.setDrawingCacheEnabled(true);
+        mImageView.buildDrawingCache();
+        Bitmap bitmap = mImageView.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
 
+        Bundle bundle = new Bundle();
+        bundle.putByteArray("bitmap", data);
+
+        Intent intent = new Intent(this, FirebaseService.class);
+        intent.putExtra("picture", bundle);
+        this.startService(intent);
+    }
 }
