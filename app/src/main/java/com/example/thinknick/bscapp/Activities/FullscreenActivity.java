@@ -25,7 +25,7 @@ public class FullscreenActivity extends AppCompatActivity {
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
-    private static final boolean AUTO_HIDE = true;
+    private static final boolean AUTO_HIDE = false;
 
     /**
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
@@ -68,7 +68,7 @@ public class FullscreenActivity extends AppCompatActivity {
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent Intent2 = new Intent(FullscreenActivity.this, ScrapBActivity.class);
+                Intent Intent2 = new Intent(FullscreenActivity.this, LoginActivity.class);
                 startActivity(Intent2);
             }
         });

@@ -47,6 +47,8 @@
         <activity android:name=".Activities.RetiredActivities.SendActivity" />
         <activity android:name=".Activities.RetiredActivities.OldCardActivity" />
         <activity android:name=".Activities.CameraActivity" />
+        <activity android:name=".Activities.LoginActivity" />
+
 
         <service
             android:name=".Service.FirebaseService"

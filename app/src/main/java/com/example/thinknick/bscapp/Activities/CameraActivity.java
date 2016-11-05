@@ -8,10 +8,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.thinknick.bscapp.Activities.RetiredActivities.OldCardActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,6 +32,9 @@ public class CameraActivity extends Activity {
     private String mCurrentPhotoPath;
     private ImageView mImageView;
     private Bitmap mImageBitmap;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private String TAG;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,33 +78,15 @@ public class CameraActivity extends Activity {
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
-    private File createImageFile2() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return image;
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == FullscreenActivity.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             try {
                 mImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
-                //createImageFromBitmap(mImageBitmap);
-                //createImageBMP(mImageBitmap);
+
                 cImageFromBitmap(mImageBitmap);
-                //mImageView = (ImageView)findViewById(R.id.imageView);
-                //mImageView.setImageBitmap(mImageBitmap);
-                //mImageView.setRotation(180);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -133,53 +122,6 @@ public class CameraActivity extends Activity {
         }
         return fileName;
     }
-    public String createImageFromBitmap(Bitmap bmp) {
-        /*
-        String fileName = "myImage";//no .png or .jpg needed
-        try {
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
-            fo.write(bytes.toByteArray());
-            // remember close file output
-            fo.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            fileName = null;
-        }
-        return fileName;*/
-        try {
-            //Write file
-            String filename = "bitmap.png";
-            FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
-            //Cleanup
-            stream.close();
-            bmp.recycle();
 
-            //Pop intent
-            Intent card = new Intent(this, OldCardActivity.class);
-            card.putExtra("image", filename);
-            startActivity(card);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public String createImageBMP(Bitmap bitmap){
-        try {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bytes = stream.toByteArray();
-            Intent intent = new Intent(this, OldCardActivity.class);
-            intent.putExtra("bitmapbytes", bytes);
-            startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
 }

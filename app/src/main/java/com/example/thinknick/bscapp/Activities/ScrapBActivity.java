@@ -50,6 +50,7 @@ public class ScrapBActivity extends Activity {
     Bitmap bitmap;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private String TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +76,14 @@ public class ScrapBActivity extends Activity {
             }
         });
 
-        signInAnonymously();
+        //signInAnonymously();
 
         changeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendToFB();
-                Toast.makeText(ScrapBActivity.this, "Cool!", Toast.LENGTH_SHORT).show();
+                getUser();
+                Toast.makeText(ScrapBActivity.this, "Picture uploaded!", Toast.LENGTH_SHORT).show();
             }
         });
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -99,6 +101,8 @@ public class ScrapBActivity extends Activity {
             }
         };
     }
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -175,5 +179,22 @@ public class ScrapBActivity extends Activity {
         Intent intent = new Intent(this, FirebaseService.class);
         intent.putExtra("picture", bundle);
         this.startService(intent);
+    }
+    public void getUser(){
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
     }
 }
