@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-                        Log.d(TAG, "onComplete: Failed=" + task.getException().getMessage()); //ADD THIS
+                      //  Log.d(TAG, "onComplete: Failed=" + task.getException().getMessage()); //ADD THIS
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -256,14 +256,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                            Toast.makeText(LoginActivity.this, "Signed up!",
+                                    Toast.LENGTH_SHORT).show();
                             userInfo();
 
                             // If sign in fails, display a message to the user. If sign in succeeds
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
                             if (!task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Signing in",
+                                Toast.makeText(LoginActivity.this, "Already signed up! Signing in",
                                         Toast.LENGTH_SHORT).show();
                                 signIn();
                             }
@@ -307,19 +308,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-            Log.d(TAG, email);
-
             Intent toCard = new Intent(LoginActivity.this, ScrapBActivity.class);
-            toCard.putExtra("User",email);
             startActivity(toCard);
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            String uid = user.getUid();
+
         }
     }
 
@@ -330,7 +321,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 5;
     }
 
     /**
