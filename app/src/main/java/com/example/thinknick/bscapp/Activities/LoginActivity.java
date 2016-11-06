@@ -41,9 +41,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.IgnoreExtraProperties;
+
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -53,7 +51,6 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference mDatabase;
 
     private static final String TAG = "Login";
 
@@ -254,10 +251,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             // ...
                         }
                     });
-            //Add user to database
-            mDatabase = FirebaseDatabase.getInstance().getReference();
-            User user = new User(password, email);
-            mDatabase.child("users").child(email).setValue(user);
         }
     }
     private void attemptLogin() {
@@ -521,22 +514,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
-    }
-    @IgnoreExtraProperties
-    public class User {
-
-        public String username;
-        public String email;
-
-        public User() {
-            // Default constructor required for calls to DataSnapshot.getValue(User.class)
-        }
-
-        public User(String username, String email) {
-            this.username = username;
-            this.email = email;
-        }
-
     }
 }
 
