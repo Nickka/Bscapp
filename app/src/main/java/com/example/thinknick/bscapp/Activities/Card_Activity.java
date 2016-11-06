@@ -1,6 +1,7 @@
 package com.example.thinknick.bscapp.Activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +22,16 @@ public class Card_Activity extends AppCompatActivity {
                 Intent Intent2 = new Intent(Card_Activity.this, ScrapBActivity.class);
                 startActivity(Intent2);
             }
+
         });
+
+
+    }
+
+    public void makeCard() {
+
+
 
     }
 }
+
