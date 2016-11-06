@@ -2,17 +2,12 @@ package com.example.thinknick.bscapp.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-
-import android.provider.MediaStore;
-import android.widget.ViewSwitcher;
 
 import com.example.thinknick.bscapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class FullscreenActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -72,11 +67,11 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 if (user != null) {
-                    Intent Intent2 = new Intent(FullscreenActivity.this, ScrapBActivity.class);
+                    Intent Intent2 = new Intent(MainActivity.this, Card_Activity.class);
                     startActivity(Intent2);
                 }
                 else{
-                    Intent Intent2 = new Intent(FullscreenActivity.this, LoginActivity.class);
+                    Intent Intent2 = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(Intent2);
                 }
 
