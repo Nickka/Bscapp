@@ -71,7 +71,7 @@
         <activity android:name=".Activities.RecievedSB"></activity>
 
         <service
-            android:name=".Activities.NotificationActivity"
+            android:name=".Service.NotificationService"
             android:enabled="true"
             android:exported="true">>
             <intent-filter>

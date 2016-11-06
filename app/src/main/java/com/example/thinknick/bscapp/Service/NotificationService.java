@@ -1,4 +1,4 @@
-package com.example.thinknick.bscapp.Activities;
+package com.example.thinknick.bscapp.Service;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.thinknick.bscapp.Activities.FullscreenActivity;
 import com.example.thinknick.bscapp.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -17,7 +18,7 @@ import com.google.firebase.messaging.RemoteMessage;
 /**
  * Created by ThinkNick on 06-11-2016.
  */
-public class NotificationActivity extends FirebaseMessagingService {
+public class NotificationService extends FirebaseMessagingService {
 
     private static final String TAG = "Firebase_MSG";
 
