@@ -54,7 +54,11 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".Activities.ScrapBActivity" />
+        <activity android:name=".Activities.ScrapBActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.thinknick.bscapp.Activities.Card_Activity" />
+        </activity>
         <activity android:name=".Activities.RetiredActivities.SendActivity" />
         <activity android:name=".Activities.RetiredActivities.OldCardActivity" />
         <activity android:name=".Activities.CameraActivity" />
@@ -66,7 +70,11 @@
             android:exported="false" />
 
 
-        <activity android:name=".Activities.Card_Activity" />
+        <activity android:name=".Activities.Card_Activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.thinknick.bscapp.Activities.MainActivity"/>
+        </activity>
         <activity android:name=".Activities.RecardActivity" />
         <activity android:name=".Activities.RecievedSB"></activity>
 
