@@ -3,6 +3,8 @@ package com.example.thinknick.bscapp.Service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +18,8 @@ import com.google.firebase.auth.UserInfo;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -80,9 +84,10 @@ public class FirebaseService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        extras = (Bundle) intent.getExtras().get("picture");
+//        extras = (Bundle) intent.getExtras().get("picture");
         getUser();
-        uploadPicToFirebase();
+        upload2Firebase2();
+        //uploadPicToFirebase();
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_FOO.equals(action)) {
@@ -139,6 +144,33 @@ public class FirebaseService extends IntentService {
             }
         });
 
+    }
+    public void upload2Firebase2() {
+        StorageReference imageRef = storageRef.child("userimages/" + userid + "/" + userid);
+
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream(this.openFileInput("myImage"));
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] data = baos.toByteArray();
+            UploadTask uploadTask = imageRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    System.out.println("not ok");
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    System.out.println("helt ok");
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                }
+            });
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public String getUser(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

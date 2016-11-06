@@ -4,34 +4,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.thinknick.bscapp.Activities.RetiredActivities.SendActivity;
 import com.example.thinknick.bscapp.R;
 import com.example.thinknick.bscapp.Service.FirebaseService;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import static com.example.thinknick.bscapp.R.id.imageView;
 import static com.example.thinknick.bscapp.R.id.imageView2;
 
 /**
@@ -45,7 +33,7 @@ public class ScrapBActivity extends Activity {
     private Bitmap mImageBitmap;
     private String mCurrentPhotoPath;
     private ImageView mImageView;
-    View changeView, button3;
+    View changeView, takePic;
     public EditText editText;
     Bitmap bitmap;
     private FirebaseAuth mAuth;
@@ -60,14 +48,14 @@ public class ScrapBActivity extends Activity {
         setContentView(R.layout.activity_scrapb);
         changeView = findViewById(R.id.vButton);
         editText = (EditText)findViewById(R.id.editText);
-        button3 = findViewById(R.id.button3);
+        takePic = findViewById(R.id.button3);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 editText.setText("");
             }
         });
-        button3.setOnClickListener(new View.OnClickListener() {
+        takePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent cam = new Intent(ScrapBActivity.this, CameraActivity.class);
@@ -76,8 +64,7 @@ public class ScrapBActivity extends Activity {
             }
         });
 
-        //signInAnonymously();
-
+        //send til firebase
         changeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,31 +102,7 @@ public class ScrapBActivity extends Activity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-    private void signInAnonymously() {
-      //  showProgressDialog();
-        // [START signin_anonymously]
-        mAuth.signInAnonymously()
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                      //  Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                          //  Log.w(TAG, "signInAnonymously", task.getException());
-                            Toast.makeText(ScrapBActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        // [START_EXCLUDE]
-                       // hideProgressDialog();
-                        // [END_EXCLUDE]
-                    }
-                });
-        // [END signin_anonymously]
-    }
 
     public void returnImage2() {
 
@@ -166,6 +129,7 @@ public class ScrapBActivity extends Activity {
         }
     }
     public void sendToFB(){
+        /*
         mImageView.setDrawingCacheEnabled(true);
         mImageView.buildDrawingCache();
         Bitmap bitmap = mImageView.getDrawingCache();
@@ -175,9 +139,9 @@ public class ScrapBActivity extends Activity {
 
         Bundle bundle = new Bundle();
         bundle.putByteArray("bitmap", data);
-
+*/
         Intent intent = new Intent(this, FirebaseService.class);
-        intent.putExtra("picture", bundle);
+        //intent.putExtra("picture", bundle);
         this.startService(intent);
     }
     public void getUser(){
