@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -26,7 +27,7 @@ import static com.example.thinknick.bscapp.R.id.imageView2;
  * Created by ThinkNick on 26-10-2016.
  */
 
-public class ScrapBActivity extends Activity {
+public class ScrapBActivity extends AppCompatActivity {
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
