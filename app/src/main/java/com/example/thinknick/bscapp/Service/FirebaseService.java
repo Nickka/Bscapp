@@ -3,18 +3,19 @@ package com.example.thinknick.bscapp.Service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -28,15 +29,17 @@ public class FirebaseService extends IntentService {
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_FOO = "com.example.thinknick.bscapp.Service.action.FOO";
     private static final String ACTION_BAZ = "com.example.thinknick.bscapp.Service.action.BAZ";
-
+ private String uid;
     // TODO: Rename parameters
     private static final String EXTRA_PARAM1 = "com.example.thinknick.bscapp.Service.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.example.thinknick.bscapp.Service.extra.PARAM2";
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://bscapp-6b91c.appspot.com/");
-    StorageReference mountainsRef = storageRef.child("mountains.jpg");
-    Bundle extras;
 
+    Bundle extras;
+    private static final String TAG = "Login";
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private String userid;
 
 
     public FirebaseService() {
@@ -78,6 +81,7 @@ public class FirebaseService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         extras = (Bundle) intent.getExtras().get("picture");
+        getUser();
         uploadPicToFirebase();
         if (intent != null) {
             final String action = intent.getAction();
@@ -111,6 +115,7 @@ public class FirebaseService extends IntentService {
         throw new UnsupportedOperationException("Not yet implemented");
     }
     private void uploadPicToFirebase(){
+        StorageReference imageRef = storageRef.child("userimages/" + userid + "/" + userid);
 
         // Get the data from an ImageView as bytes
         /*mImageView.setDrawingCacheEnabled(true);
@@ -120,7 +125,7 @@ public class FirebaseService extends IntentService {
         //Bundle extras = getIntent().getExtras();
         byte[] data = extras.getByteArray("bitmap");
 
-        UploadTask uploadTask = mountainsRef.putBytes(data);
+        UploadTask uploadTask = imageRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -135,4 +140,30 @@ public class FirebaseService extends IntentService {
         });
 
     }
+    public String getUser(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            for (UserInfo profile : user.getProviderData()) {
+                // Id of the provider (ex: google.com)
+                String providerId = profile.getProviderId();
+
+                // UID specific to the provider
+                userid = profile.getUid();
+
+                // Name, email address, and profile photo Url
+                String name = profile.getDisplayName();
+                String email = profile.getEmail();
+                Uri photoUrl = profile.getPhotoUrl();
+            }
+        }
+        return userid;
+
+    }
+
+
+    public void usersLink(){
+        //imageRef.getPath();
+       // String user = uid;
+    }
+
 }

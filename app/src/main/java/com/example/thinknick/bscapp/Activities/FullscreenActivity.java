@@ -15,6 +15,8 @@ import android.provider.MediaStore;
 import android.widget.ViewSwitcher;
 
 import com.example.thinknick.bscapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -45,6 +47,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private boolean mVisible;
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +71,15 @@ public class FullscreenActivity extends AppCompatActivity {
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent Intent2 = new Intent(FullscreenActivity.this, LoginActivity.class);
-                startActivity(Intent2);
+                if (user != null) {
+                    Intent Intent2 = new Intent(FullscreenActivity.this, ScrapBActivity.class);
+                    startActivity(Intent2);
+                }
+                else{
+                    Intent Intent2 = new Intent(FullscreenActivity.this, LoginActivity.class);
+                    startActivity(Intent2);
+                }
+
             }
         });
 
