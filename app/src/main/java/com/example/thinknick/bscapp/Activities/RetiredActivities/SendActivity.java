@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import com.example.thinknick.bscapp.Activities.FullscreenActivity;
+import com.example.thinknick.bscapp.Activities.MainActivity;
 import com.example.thinknick.bscapp.R;
 
 /**
@@ -29,7 +29,7 @@ public class SendActivity extends Activity implements View.OnClickListener{
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Intent2 = new Intent(SendActivity.this, FullscreenActivity.class);
+                Intent Intent2 = new Intent(SendActivity.this, MainActivity.class);
                 startActivity(Intent2);            }
         });
 
