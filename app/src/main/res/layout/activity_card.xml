@@ -37,7 +37,8 @@
             android:layout_below="@+id/subjectTextView"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="107dp"/>
+            android:layout_marginTop="107dp"
+            android:textColor="@color/bscAppWhite"/>
 
         <TextView
             android:text="@string/deadlineString"
@@ -49,7 +50,8 @@
             android:layout_below="@+id/participantsTextView"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="96dp"/>
+            android:layout_marginTop="96dp"
+            android:textColor="@color/bscAppWhite"/>
 
         <TextView
             android:text="@string/subjectString"
@@ -60,7 +62,8 @@
             android:textSize="36sp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentStart="true"
+            android:textColor="@color/bscAppWhite"/>
 
     </RelativeLayout>
 

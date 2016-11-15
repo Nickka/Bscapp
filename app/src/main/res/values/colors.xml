@@ -5,4 +5,8 @@
     <color name="colorAccent">#ff4081</color>
 
     <color name="black_overlay">#00000000</color>
+
+    <color name="bscAppColor">#89929F</color>
+    <color name="bscAppColorDark">#4E6172</color>
+    <color name="bscAppWhite">#FFFFFF</color>
 </resources>

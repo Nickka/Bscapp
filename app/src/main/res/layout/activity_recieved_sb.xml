@@ -26,7 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/senderTextView"
-            android:textSize="24sp"/>
+            android:textSize="24sp"
+            android:textColor="@color/bscAppWhite"/>
 
         <ImageView
             android:layout_height="200dp"
@@ -40,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/recievedCardTextView"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:textColor="@color/bscAppWhite"/>
     </LinearLayout>
 </RelativeLayout>
