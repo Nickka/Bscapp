@@ -9,7 +9,8 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context="com.example.thinknick.bscapp.Activities.RecardActivity">
+                tools:context="com.example.thinknick.bscapp.Activities.RecardActivity"
+                android:background="@color/bscAppBackgroundColor">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/button3"
                 android:layout_gravity="center_horizontal"
-                />
+                android:textColor="@color/bscAppPrimaryTextColor"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -57,7 +58,8 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:textColor="@color/bscAppPrimaryTextColor"/>
 
             <LinearLayout android:id="@+id/fullscreen_content_controls"
                           style="?metaButtonBarStyle"
@@ -77,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Tryk for at sende"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/bscAppPrimaryTextColor"
                         android:clickable="true"
                         android:textColorLink="?attr/colorSwitchThumbNormal" />
 

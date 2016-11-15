@@ -9,7 +9,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context="com.example.thinknick.bscapp.Activities.Card_Activity"
-    >
+                android:background="@color/bscAppBackgroundColor">
 
 
 <!-- Login progress -->
@@ -86,7 +86,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/action_sign_in"
                     android:layout_weight="1"
-                    tools:textStyle="normal"/>
+                    tools:textStyle="normal"
+                    android:textColor="@color/bscAppPrimaryTextColor"/>
 
                 <Button
                     android:id="@+id/email_sign_up_button"
@@ -94,7 +95,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/signUpString"
                     android:layout_weight="1"
-                    tools:textStyle="normal"/>
+                    tools:textStyle="normal"
+                    android:textColor="@color/bscAppPrimaryTextColor"/>
             </LinearLayout>
 
         </LinearLayout>

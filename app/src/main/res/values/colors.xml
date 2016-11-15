@@ -6,7 +6,11 @@
 
     <color name="black_overlay">#00000000</color>
 
+
+    <!-- APP COLORS GO HERE :-) -->
     <color name="bscAppColor">#89929F</color>
     <color name="bscAppColorDark">#4E6172</color>
-    <color name="bscAppWhite">#FFFFFF</color>
+    <color name="bscAppBackgroundColor">#FFFFFF</color>
+    <color name="bscAppPrimaryTextColor">#000000</color>
+    <color name="bscAppSecondaryTextColor">#FFFFFF</color>
 </resources>

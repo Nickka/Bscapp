@@ -9,7 +9,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context="com.example.thinknick.bscapp.Activities.Card_Activity"
-    >
+                android:background="@color/bscAppBackgroundColor">
 
     <RelativeLayout
         android:padding="16dp"
@@ -25,7 +25,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/goToScrapbookButton"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/bscAppPrimaryTextColor"/>
 
         <TextView
             android:text="@string/participantsString"
@@ -38,7 +39,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="107dp"
-            android:textColor="@color/bscAppWhite"/>
+            android:textColor="@color/bscAppSecondaryTextColor"/>
 
         <TextView
             android:text="@string/deadlineString"
@@ -51,7 +52,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="96dp"
-            android:textColor="@color/bscAppWhite"/>
+            android:textColor="@color/bscAppSecondaryTextColor"/>
 
         <TextView
             android:text="@string/subjectString"
@@ -63,7 +64,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textColor="@color/bscAppWhite"/>
+            android:textColor="@color/bscAppSecondaryTextColor"/>
 
     </RelativeLayout>
 

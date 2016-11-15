@@ -9,7 +9,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context="com.example.thinknick.bscapp.Activities.Card_Activity"
-                android:background="@android:color/white"
+                android:background="@color/bscAppBackgroundColor"
     >
 
     <!-- This FrameLayout insets its children based on system windows using
@@ -22,7 +22,8 @@
         android:layout_width="75dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/bscAppPrimaryTextColor"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -42,7 +43,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="32dp"
-            android:textColor="@color/bscAppWhite"/>
+            android:textColor="@color/bscAppSecondaryTextColor"/>
 
         <Button android:id="@+id/sButton"
                 android:layout_width="match_parent"
@@ -55,7 +56,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-            />
+                android:textColor="@color/bscAppPrimaryTextColor"/>
 
     </LinearLayout>
 
