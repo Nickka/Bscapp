@@ -37,6 +37,10 @@ import java.util.List;
 
 import com.example.thinknick.bscapp.R;
 import com.example.thinknick.bscapp.User;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -45,6 +49,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.Logger;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -81,12 +86,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
+
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
         // Set up the login form.
@@ -132,19 +144,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         };
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+
     @Override
     public void onStart() {
-        super.onStart();
+        super.onStart();// ATTENTION: This was auto-generated to implement the App Indexing API.
+// See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
         mAuth.addAuthStateListener(mAuthListener);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
+
     @Override
     public void onStop() {
-        super.onStop();
+        super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
+// See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.disconnect();
     }
+
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -162,7 +192,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
             Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                    .setAction(android.R.string.ok, new OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
                         public void onClick(View v) {
@@ -195,7 +225,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
 
-    private void createAccount(){
+    private void createAccount() {
         if (mAuthTask != null) {
             return;
         }
@@ -242,8 +272,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Toast.makeText(LoginActivity.this, "Signed up!",
                                     Toast.LENGTH_SHORT).show();
                             userInfo();
-                            User user = new User(password, email);
-                            mDatabase.child("users").child("user1").setValue(user);
 
                             // If sign in fails, display a message to the user. If sign in succeeds
                             // the auth state listener will be notified and logic to handle the
@@ -252,13 +280,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 Log.w("SignUp", "signUpWithEmail:failed", task.getException());
                                 Toast.makeText(LoginActivity.this, "Something went wrong, try again later. :(",
                                         Toast.LENGTH_SHORT).show();
+                            } else {
+                                putUserInDatabase(password, email);
                             }
 
                             // ...
                         }
                     });
+
+
         }
     }
+
+    private void putUserInDatabase(String password, String email) {
+        User user = new User(password,  email);
+        FirebaseUser fBUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = fBUser.getUid();
+
+        mDatabase.child("users").child(uid).setValue(user);
+    }
+
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -325,7 +366,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void signIn(){
+    private void signIn() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
@@ -352,7 +393,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
-    private void userInfo(){
+    private void userInfo() {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -451,6 +492,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Login Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -497,7 +554,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             return true;
         }
-        public void signUp(){
+
+        public void signUp() {
 
 
         }
