@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/bscAppColor</item>
         <item name="colorPrimaryDark">@color/bscAppColorDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="textColorPrimary">@color/bscAppWhite</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">
