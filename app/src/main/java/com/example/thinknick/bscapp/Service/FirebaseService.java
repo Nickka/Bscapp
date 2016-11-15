@@ -9,17 +9,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -84,20 +88,26 @@ public class FirebaseService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        String id = intent.getStringExtra("FBservice");
+
 //        extras = (Bundle) intent.getExtras().get("picture");
-        getUser();
-        upload2Firebase2();
+
         //uploadPicToFirebase();
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_FOO.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(param1, param2);
-            } else if (ACTION_BAZ.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionBaz(param1, param2);
+            if (id.equals("DL"))  {
+                try {
+                    getImageFromPath();
+                    Log.d(TAG, "Starter DL");
+
+                }
+                catch(IOException e)
+                {
+                    System.out.println(e.getMessage());
+                }
+            } else if (id.equals("UL")) {
+                getUser();
+                upload2Firebase2();
             }
         }
     }
@@ -193,9 +203,31 @@ public class FirebaseService extends IntentService {
     }
 
 
-    public void usersLink(){
-        //imageRef.getPath();
-       // String user = uid;
+    public void getImageFromPath() throws IOException {
+        StorageReference islandRef = storageRef.child("userimages/test@test.dk/test@test.dk");
+
+        File localFile = File.createTempFile("images", "jpg");
+        try {
+            islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(getApplicationContext(), "Downloaded", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Downloaded til path");
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.d(TAG, "Downloaded IKKE til path");
+                }
+            });
+            throw new IOException("Works not");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+
     }
 
 }

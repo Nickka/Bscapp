@@ -76,7 +76,8 @@
                 android:value="com.example.thinknick.bscapp.Activities.MainActivity"/>
         </activity>
         <activity android:name=".Activities.RecardActivity" />
-        <activity android:name=".Activities.RecievedSB"></activity>
+        <activity android:name=".Activities.RecievedSB"
+            android:exported="true"></activity>
 
         <service
             android:name=".Service.NotificationService"

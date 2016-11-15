@@ -142,7 +142,7 @@ public class ScrapBActivity extends AppCompatActivity {
         bundle.putByteArray("bitmap", data);
 */
         Intent intent = new Intent(this, FirebaseService.class);
-        //intent.putExtra("picture", bundle);
+        intent.putExtra("FBservice", "UL");
         this.startService(intent);
     }
     public void getUser(){
