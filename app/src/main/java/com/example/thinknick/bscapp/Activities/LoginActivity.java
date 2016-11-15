@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.thinknick.bscapp.R;
+import com.example.thinknick.bscapp.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -204,8 +205,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
         boolean cancel = false;
         View focusView = null;
 
@@ -241,11 +242,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Toast.makeText(LoginActivity.this, "Signed up!",
                                     Toast.LENGTH_SHORT).show();
                             userInfo();
+                            User user = new User(password, email);
+                            mDatabase.child("users").child("user1").setValue(user);
 
                             // If sign in fails, display a message to the user. If sign in succeeds
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
                             if (!task.isSuccessful()) {
+                                Log.w("SignUp", "signUpWithEmail:failed", task.getException());
                                 Toast.makeText(LoginActivity.this, "Something went wrong, try again later. :(",
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -253,9 +257,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             // ...
                         }
                     });
-            User user = new User(password, email);
-
-            mDatabase.child("users").child(email).setValue(user);
         }
     }
     private void attemptLogin() {
@@ -518,21 +519,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
-        }
-    }
-    @IgnoreExtraProperties
-    public class User {
-
-        public String password;
-        public String email;
-
-        public User() {
-            // Default constructor required for calls to DataSnapshot.getValue(User.class)
-        }
-
-        public User(String username, String email) {
-            this.password = username;
-            this.email = email;
         }
     }
 }
