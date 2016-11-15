@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.thinknick.bscapp.R;
 import com.example.thinknick.bscapp.Service.CardService;
+import com.example.thinknick.bscapp.Service.DownloadPicService;
 import com.example.thinknick.bscapp.Service.FirebaseService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,8 +50,8 @@ public class RecievedSB extends AppCompatActivity {
         recievedCardTextView = (TextView) findViewById(R.id.recievedCardTextView);
 
 
-        Intent intent = new Intent(this, FirebaseService.class);
-        intent.putExtra("FBservice", "DL");
+        Intent intent = new Intent(this, DownloadPicService.class);
+       // intent.putExtra("FBservice", "DL");
         this.startService(intent);
     }
 
