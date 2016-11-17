@@ -19,9 +19,9 @@
     </string>
     <string name="signUpString">Registrér dig!</string>
     <!-- Strings related to card_activity -->
-    <string name="subjectString">Emne: Hygge</string>
+    <string name="subjectString">Emne:</string>
     <string name="fillCardString">Udfyld Kort</string>
-    <string name="participantsString">Deltagere: \nInger \nJohn \nDig</string>
-    <string name="deadlineString">Tid til afsendelse: 7 dage!</string>
+    <string name="participantsString">Deltagere:</string>
+    <string name="deadlineString">Deadline</string>
 
 </resources>

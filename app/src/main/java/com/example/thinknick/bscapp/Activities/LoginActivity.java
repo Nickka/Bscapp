@@ -45,7 +45,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.Logger;
 
 
@@ -255,7 +254,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Toast.makeText(LoginActivity.this, "Signed up!",
                                     Toast.LENGTH_SHORT).show();
-                            userInfo();
+                            setCurrentUserNextActivity();
 
                             // If sign in fails, display a message to the user. If sign in succeeds
                             // the auth state listener will be notified and logic to handle the
@@ -331,7 +330,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                             showProgress(false);
-                            userInfo();
+                            setCurrentUserNextActivity();
 
                             // If sign in fails, display a message to the user. If sign in succeeds
                             // the auth state listener will be notified and logic to handle the
@@ -350,38 +349,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void signIn() {
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                        showProgress(false);
-                        userInfo();
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(LoginActivity.this, "Sign in failed",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        // ...
-                    }
-                });
-
-    }
-
-    private void userInfo() {
+    private void setCurrentUserNextActivity() {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Intent toCard = new Intent(LoginActivity.this, ScrapBActivity.class);
+            Intent toCard = new Intent(LoginActivity.this, Card_Activity.class);
             startActivity(toCard);
 
         }
