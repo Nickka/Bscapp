@@ -23,5 +23,7 @@ public class Card_Activity extends AppCompatActivity {
             }
         });
 
+
+
     }
 }
