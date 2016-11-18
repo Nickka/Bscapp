@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.thinknick.bscapp.R;
 import com.example.thinknick.bscapp.Service.FirebaseService;
+import com.example.thinknick.bscapp.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,7 +33,8 @@ public class ScrapBActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     private Bitmap mImageBitmap;
-    private String mCurrentPhotoPath;
+    private String uid;
+    private String text;
     private ImageView mImageView;
     View changeView, takePic;
     public EditText editText;
@@ -71,7 +73,7 @@ public class ScrapBActivity extends AppCompatActivity {
             public void onClick(View view) {
                 sendToFB();
                 getUser();
-                Toast.makeText(ScrapBActivity.this, "Picture uploaded!", Toast.LENGTH_SHORT).show();
+                putTextIntoDatabase();
             }
         });
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -89,7 +91,11 @@ public class ScrapBActivity extends AppCompatActivity {
             }
         };
     }
-
+    private void putTextIntoDatabase() {
+        FirebaseUser fBUser = FirebaseAuth.getInstance().getCurrentUser();
+        uid = fBUser.getUid();
+        text = editText.getText().toString();
+    }
 
     @Override
     public void onStart() {
@@ -130,19 +136,10 @@ public class ScrapBActivity extends AppCompatActivity {
         }
     }
     public void sendToFB(){
-        /*
-        mImageView.setDrawingCacheEnabled(true);
-        mImageView.buildDrawingCache();
-        Bitmap bitmap = mImageView.getDrawingCache();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
 
-        Bundle bundle = new Bundle();
-        bundle.putByteArray("bitmap", data);
-*/
         Intent intent = new Intent(this, FirebaseService.class);
         intent.putExtra("FBservice", "UL");
+        intent.putExtra("FBServiceTxt", text);
         this.startService(intent);
     }
     public void getUser(){
