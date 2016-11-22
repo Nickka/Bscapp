@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
+        //FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
 
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
@@ -381,7 +381,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Intent toCard = new Intent(LoginActivity.this, ScrapBActivity.class);
+            Intent toCard = new Intent(LoginActivity.this, Card_Activity.class);
             startActivity(toCard);
 
         }

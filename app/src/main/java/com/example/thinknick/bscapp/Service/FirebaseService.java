@@ -89,6 +89,7 @@ public class FirebaseService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         String id = intent.getStringExtra("FBservice");
+        String text = intent.getStringExtra("FBServiceTxt");
 
 //        extras = (Bundle) intent.getExtras().get("picture");
 
@@ -108,6 +109,7 @@ public class FirebaseService extends IntentService {
             } else if (id.equals("UL")) {
                 getUser();
                 upload2Firebase2();
+
             }
         }
     }
@@ -129,6 +131,8 @@ public class FirebaseService extends IntentService {
         // TODO: Handle action Baz
         throw new UnsupportedOperationException("Not yet implemented");
     }
+    // IKKE I BRUG
+    /*
     private void uploadPicToFirebase(){
         StorageReference imageRef = storageRef.child("userimages/" + userid + "/" + userid);
 
@@ -138,6 +142,7 @@ public class FirebaseService extends IntentService {
         Bitmap bitmap = mImageView.getDrawingCache();
         */
         //Bundle extras = getIntent().getExtras();
+    /*
         byte[] data = extras.getByteArray("bitmap");
 
         UploadTask uploadTask = imageRef.putBytes(data);
@@ -154,7 +159,8 @@ public class FirebaseService extends IntentService {
             }
         });
 
-    }
+    }*/
+
     public void upload2Firebase2() {
         StorageReference imageRef = storageRef.child("userimages/" + userid + "/" + userid);
 
@@ -175,6 +181,7 @@ public class FirebaseService extends IntentService {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     System.out.println("helt ok");
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    Toast.makeText(FirebaseService.this, "Card uploaded!", Toast.LENGTH_SHORT).show();
                 }
             });
         }
