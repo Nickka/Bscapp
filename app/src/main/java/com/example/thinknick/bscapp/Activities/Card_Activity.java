@@ -30,6 +30,8 @@ public class Card_Activity extends AppCompatActivity {
     private TextView participantsTextView;
     private TextView deadlineTextView;
 
+    ValueEventListener postListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +66,7 @@ public class Card_Activity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        ValueEventListener postListener = new ValueEventListener() {
+        postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //Get UID
@@ -104,7 +106,14 @@ public class Card_Activity extends AppCompatActivity {
                 // ...
             }
         };
-        mPostReference.addValueEventListener(postListener);
+        mPostReference.addListenerForSingleValueEvent(postListener);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        mPostReference.removeEventListener(postListener);
+        Log.w(TAG, "Eventlistener on card is removed");
     }
 }
 
