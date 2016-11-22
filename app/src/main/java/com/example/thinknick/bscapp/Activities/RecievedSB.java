@@ -1,6 +1,5 @@
 package com.example.thinknick.bscapp.Activities;
 
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
-import android.os.Messenger;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,9 +35,6 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 
-import static com.example.thinknick.bscapp.R.id.imageView;
-import static com.example.thinknick.bscapp.R.id.recievedCardImageView;
-
 
 public class RecievedSB extends AppCompatActivity {
     private LoginActivity.UserLoginTask mAuthTask = null;
@@ -58,6 +53,10 @@ public class RecievedSB extends AppCompatActivity {
     /** Flag indicating whether we have called bind on the service. */
     boolean mBound;
     private File localFile;
+    private String friendpicpath;
+    private String userid;
+    private String card;
+    private String textpath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,16 +93,22 @@ public class RecievedSB extends AppCompatActivity {
         if (mAuthTask != null) {
             return;
         }
+        userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                CardService cid = dataSnapshot.getValue(CardService.class);
-                recievedCardTextView.setText(cid.email);
-                System.out.println(cid.email);
-               // if (mBound) {
+                card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
 
-               // }
+                friendpicpath = dataSnapshot.child("users").child(userid).child("friend").getValue(String.class)+
+                        dataSnapshot.child("users").child(userid).child("card").getValue(String.class); // = AkdjkaJLJDAjakljdlad+card
+                textpath = dataSnapshot.child("SB").child(userid+card).child("text").getValue(String.class); // = SB / usercard / text
+                CardService cid = dataSnapshot.getValue(CardService.class);
+                recievedCardTextView.setText(textpath);
+                System.out.println(textpath);
+
+
             }
 
             @Override
@@ -153,7 +158,7 @@ public class RecievedSB extends AppCompatActivity {
     // Eneste måde vi kan få billedet i activityen, der kan ikke bruges en service til dette umiddelbart da eneste måde er at sætte stien til billedet, men stien bliver lavet og givet tilbage til activityen
     // før at billedet er downloadet, hvilket bare giver et tomt element. Så backend kaldet er smidt i denne metode. It works... 6 timer spildt.
     public void getImage() throws IOException{
-            StorageReference islandRef = storageRef.child("/userimages/magnushk@au.dk/magnushk@au.dk");
+            StorageReference islandRef = storageRef.child("/userimages/" + friendpicpath + "/" + friendpicpath);
             localFile = File.createTempFile("images", ".jpg");
             path1 = localFile.getAbsolutePath();
 

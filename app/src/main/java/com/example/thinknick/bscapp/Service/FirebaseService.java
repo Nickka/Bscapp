@@ -16,6 +16,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -48,6 +54,12 @@ public class FirebaseService extends IntentService {
     private static final String TAG = "Login";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String userid;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+    private String text1;
+    private String card;
+    private String emailid;
+    private DatabaseReference mPostReference;
 
 
     public FirebaseService() {
@@ -88,8 +100,13 @@ public class FirebaseService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        String id = intent.getStringExtra("FBservice");
-        String text = intent.getStringExtra("FBServiceTxt");
+        Bundle bundle = intent.getExtras();
+        String id = bundle.getString("FBservice");
+        text1 = bundle.getString("FBServiceTxt");
+
+
+        //String id = intent.getStringExtra("FBservice");
+        //text1 = intent.getStringExtra("FBServiceTxt");
 
 //        extras = (Bundle) intent.getExtras().get("picture");
 
@@ -109,6 +126,7 @@ public class FirebaseService extends IntentService {
             } else if (id.equals("UL")) {
                 getUser();
                 upload2Firebase2();
+
 
             }
         }
@@ -162,7 +180,7 @@ public class FirebaseService extends IntentService {
     }*/
 
     public void upload2Firebase2() {
-        StorageReference imageRef = storageRef.child("userimages/" + userid + "/" + userid);
+        StorageReference imageRef = storageRef.child("userimages/" + userid+card + "/" + userid+card);
 
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(this.openFileInput("myImage"));
@@ -184,28 +202,50 @@ public class FirebaseService extends IntentService {
                     Toast.makeText(FirebaseService.this, "Card uploaded!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            String imgPath = imageRef.toString();
+
+            mDatabase.child("SB").child(userid+card).child("Bruger").setValue(userid);
+            mDatabase.child("SB").child(userid+card).child("picturepath").setValue(imgPath);
+            mDatabase.child("SB").child(userid+card).child("text").setValue(text1);
+
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+        
+        
     }
-    public String getUser(){
+    public void getUser(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        });
+
         if (user != null) {
             for (UserInfo profile : user.getProviderData()) {
                 // Id of the provider (ex: google.com)
                 String providerId = profile.getProviderId();
 
                 // UID specific to the provider
-                userid = profile.getUid();
+                 emailid = profile.getUid();
 
                 // Name, email address, and profile photo Url
                 String name = profile.getDisplayName();
                 String email = profile.getEmail();
-                Uri photoUrl = profile.getPhotoUrl();
             }
         }
-        return userid;
 
     }
 

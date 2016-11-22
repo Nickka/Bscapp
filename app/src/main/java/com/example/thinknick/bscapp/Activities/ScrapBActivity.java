@@ -71,9 +71,12 @@ public class ScrapBActivity extends AppCompatActivity {
         changeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                text = editText.getText().toString();
+
                 sendToFB();
                 getUser();
                 putTextIntoDatabase();
+
             }
         });
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -94,7 +97,6 @@ public class ScrapBActivity extends AppCompatActivity {
     private void putTextIntoDatabase() {
         FirebaseUser fBUser = FirebaseAuth.getInstance().getCurrentUser();
         uid = fBUser.getUid();
-        text = editText.getText().toString();
     }
 
     @Override
@@ -138,8 +140,10 @@ public class ScrapBActivity extends AppCompatActivity {
     public void sendToFB(){
 
         Intent intent = new Intent(this, FirebaseService.class);
-        intent.putExtra("FBservice", "UL");
-        intent.putExtra("FBServiceTxt", text);
+        Bundle mBundle = new Bundle();
+        mBundle.putString("FBservice", "UL");
+        mBundle.putString("FBServiceTxt", text);
+        intent.putExtras(mBundle);
         this.startService(intent);
     }
     public void getUser(){
