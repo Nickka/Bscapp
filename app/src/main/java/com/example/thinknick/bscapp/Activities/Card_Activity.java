@@ -22,7 +22,14 @@ public class Card_Activity extends AppCompatActivity {
                 startActivity(Intent2);
             }
         });
-
+        Button goToRecievedCard = (Button) findViewById(R.id.recievedSBb);
+        goToRecievedCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent recievedSB = new Intent(Card_Activity.this, RecievedSB.class);
+                startActivity(recievedSB);
+            }
+        });
 
 
     }
