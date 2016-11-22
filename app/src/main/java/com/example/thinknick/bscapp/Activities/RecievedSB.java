@@ -83,7 +83,7 @@ public class RecievedSB extends AppCompatActivity {
 
                 friendpicpath = dataSnapshot.child("users").child(userid).child("friend").getValue(String.class)+
                         dataSnapshot.child("users").child(userid).child("card").getValue(String.class); // = AkdjkaJLJDAjakljdlad+card
-                textpath = dataSnapshot.child("SB").child(userid+card).child("text").getValue(String.class); // = SB / usercard / text
+                textpath = dataSnapshot.child("SB").child(friendpicpath).child("text").getValue(String.class); // = SB / usercard / text
                 CardService cid = dataSnapshot.getValue(CardService.class);
                 recievedCardTextView.setText(textpath);
                 System.out.println(textpath);
