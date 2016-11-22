@@ -62,28 +62,8 @@ public class RecievedSB extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recieved_sb);
-        mPostReference = FirebaseDatabase.getInstance().getReference()
-                .child("users").child("YaMbfYZ3IDc19GX9XheMFPIoa8J3");
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
+        mPostReference = FirebaseDatabase.getInstance().getReference();
         recievedCardTextView = (TextView) findViewById(R.id.recievedCardTextView);
-        try {
-            getImage();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
     @Override
@@ -107,8 +87,11 @@ public class RecievedSB extends AppCompatActivity {
                 CardService cid = dataSnapshot.getValue(CardService.class);
                 recievedCardTextView.setText(textpath);
                 System.out.println(textpath);
-
-
+                try {
+                    getImage();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

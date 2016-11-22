@@ -21,19 +21,34 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_fullscreen);
         View sButton = findViewById(R.id.sButton);
+        View logoutButton = findViewById(R.id.button6);
+
 
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 if (user != null) {
                     Intent Intent2 = new Intent(MainActivity.this, Card_Activity.class);
                     startActivity(Intent2);
-                }
-                else{
+                } else {
                     Intent Intent2 = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(Intent2);
                 }
 
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                user = null;
+                if (user != null) {
+                    Intent Intent2 = new Intent(MainActivity.this, Card_Activity.class);
+                    startActivity(Intent2);
+                } else {
+                    Intent Intent2 = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(Intent2);
+                }
             }
         });
     }

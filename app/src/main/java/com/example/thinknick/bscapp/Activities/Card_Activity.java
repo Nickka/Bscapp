@@ -35,6 +35,7 @@ public class Card_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
         Button goToScrapbookButton = (Button) findViewById(R.id.goToScrapbookButton);
+        Button seeYouCard = (Button) findViewById(R.id.recievedSBb);
 
         //Get a ref to the whole database
         mPostReference = FirebaseDatabase.getInstance().getReference();
@@ -50,6 +51,14 @@ public class Card_Activity extends AppCompatActivity {
                 startActivity(Intent2);
             }
         });
+        seeYouCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Intent = new Intent(Card_Activity.this, RecievedSB.class);
+                startActivity(Intent);
+            }
+        });
+
     }
 
     @Override

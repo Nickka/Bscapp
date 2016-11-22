@@ -105,12 +105,6 @@ public class FirebaseService extends IntentService {
         text1 = bundle.getString("FBServiceTxt");
 
 
-        //String id = intent.getStringExtra("FBservice");
-        //text1 = intent.getStringExtra("FBServiceTxt");
-
-//        extras = (Bundle) intent.getExtras().get("picture");
-
-        //uploadPicToFirebase();
         if (intent != null) {
             final String action = intent.getAction();
             if (id.equals("DL"))  {
@@ -132,52 +126,8 @@ public class FirebaseService extends IntentService {
         }
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionFoo(String param1, String param2) {
-        // TODO: Handle action Foo
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
-    /**
-     * Handle action Baz in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionBaz(String param1, String param2) {
-        // TODO: Handle action Baz
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-    // IKKE I BRUG
-    /*
-    private void uploadPicToFirebase(){
-        StorageReference imageRef = storageRef.child("userimages/" + userid + "/" + userid);
 
-        // Get the data from an ImageView as bytes
-        /*mImageView.setDrawingCacheEnabled(true);
-        mImageView.buildDrawingCache();
-        Bitmap bitmap = mImageView.getDrawingCache();
-        */
-        //Bundle extras = getIntent().getExtras();
-    /*
-        byte[] data = extras.getByteArray("bitmap");
-
-        UploadTask uploadTask = imageRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                System.out.println("not ok");
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                System.out.println("helt ok");
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-            }
-        });
-
-    }*/
 
     public void upload2Firebase2() {
         StorageReference imageRef = storageRef.child("userimages/" + userid+card + "/" + userid+card);
