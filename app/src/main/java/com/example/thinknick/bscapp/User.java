@@ -11,13 +11,15 @@ public class User {
 
     public String password;
     public String email;
+    public String username;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String username, String email) {
-        this.password = username;
+    public User(String password, String email, String username) {
+        this.password = password;
         this.email = email;
+        this.username = username;
     }
 }

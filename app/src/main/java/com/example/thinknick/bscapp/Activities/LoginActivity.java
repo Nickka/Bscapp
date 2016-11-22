@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
+    private EditText mUsernameView;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -100,6 +101,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mAuth = FirebaseAuth.getInstance();
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        populateAutoComplete();
+
+        mUsernameView = (EditText) findViewById(R.id.username);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -218,6 +222,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
         // Store values at the time of the login attempt.
+        final String username = mUsernameView.getText().toString();
         final String email = mEmailView.getText().toString();
         final String password = mPasswordView.getText().toString();
         boolean cancel = false;
@@ -227,6 +232,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check if username is empty
+        if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError(getString(R.string.error_field_required));
+            mUsernameView.setHint("Dit brugernavn");
+            mUsernameView.setVisibility(View.VISIBLE);
+            focusView = mUsernameView;
             cancel = true;
         }
 
@@ -264,7 +278,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 Toast.makeText(LoginActivity.this, "Something went wrong, try again later. :(",
                                         Toast.LENGTH_SHORT).show();
                             } else {
-                                putUserInDatabase(password, email);
+                                putUserInDatabase(password, email, username);
                             }
 
                             // ...
@@ -275,8 +289,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void putUserInDatabase(String password, String email) {
-        User user = new User(password,  email);
+    private void putUserInDatabase(String password, String email, String username) {
+
+        User user = new User(password, email, username);
         FirebaseUser fBUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = fBUser.getUid();
 
