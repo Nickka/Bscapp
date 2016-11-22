@@ -36,12 +36,8 @@ public class Card_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_card);
         Button goToScrapbookButton = (Button) findViewById(R.id.goToScrapbookButton);
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.w(TAG, "uid: " + uid);
-        mPostReference = FirebaseDatabase.getInstance().getReference()
-                .child("Users").child(uid);
-        mPostReference = FirebaseDatabase.getInstance().getReference()
-                .child("Cards").child("ed");
+        //Get a ref to the whole database
+        mPostReference = FirebaseDatabase.getInstance().getReference();
 
         themeTextView = (TextView) findViewById(R.id.subjectTextView);
         participantsTextView = (TextView) findViewById(R.id.participantsTextView);
@@ -54,7 +50,6 @@ public class Card_Activity extends AppCompatActivity {
                 startActivity(Intent2);
             }
         });
-
     }
 
     @Override
@@ -63,18 +58,33 @@ public class Card_Activity extends AppCompatActivity {
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                //Get UID
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                Log.w(TAG, "uid: " + uid);
+
+
+                //Get card
+                String card = dataSnapshot.child("users").child(uid).child("card").getValue(String.class);
+
+
+                //Checks if there is any card
+                if(card == null) {
+                    themeTextView.setText("Der er ikke noget kort lige nu");
+                    return;
+                }
+
                 // Get alt indhold til kortet
-                String theme = dataSnapshot.child("theme").getValue(String.class);
+                String theme = dataSnapshot.child("Cards").child(card).child("theme").getValue(String.class);
                 themeTextView.setText("Tema: " + theme);
 
-                Iterable<DataSnapshot> participantsList = dataSnapshot.child("members").getChildren();
+                Iterable<DataSnapshot> participantsList = dataSnapshot.child("Cards").child(card).child("members").getChildren();
                 String participants = "";
                 for (DataSnapshot child : participantsList) {
                     participants += child.getValue() + "\r\n";
                 }
                 participantsTextView.setText("Deltagere:\r\n" + participants);
 
-                String deadline = dataSnapshot.child("deadline").getValue(String.class);
+                String deadline = dataSnapshot.child("Cards").child(card).child("deadline").getValue(String.class);
                 deadlineTextView.setText("Deadline: " + deadline);
             }
 
