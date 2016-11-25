@@ -96,8 +96,10 @@ public class Card_Activity extends AppCompatActivity {
                     participantsTextView.setText("Du har desværre ikke noget kort lige nu");
                     deadlineTextView.setText("");
                     goToScrapbookButton.setVisibility(View.INVISIBLE);
+                    showProgress(false);
                     return;
                 }
+
 
                 // Get alt indhold til kortet
                 String theme = dataSnapshot.child("Cards").child(card).child("theme").getValue(String.class);
