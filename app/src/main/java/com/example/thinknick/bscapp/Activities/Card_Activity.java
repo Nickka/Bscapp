@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import static com.example.thinknick.bscapp.R.id.deadlineTextView;
+import static com.example.thinknick.bscapp.R.id.goToScrapbookButton;
 import static com.example.thinknick.bscapp.R.id.subjectTextView;
 
 public class Card_Activity extends AppCompatActivity {
@@ -30,14 +31,17 @@ public class Card_Activity extends AppCompatActivity {
     private TextView participantsTextView;
     private TextView deadlineTextView;
 
+    private Button goToScrapbookButton;
+    private  Button seeYouCard;
+
     ValueEventListener postListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
-        Button goToScrapbookButton = (Button) findViewById(R.id.goToScrapbookButton);
-        Button seeYouCard = (Button) findViewById(R.id.recievedSBb);
+        goToScrapbookButton = (Button) findViewById(R.id.goToScrapbookButton);
+        seeYouCard = (Button) findViewById(R.id.recievedSBb);
 
         //Get a ref to the whole database
         mPostReference = FirebaseDatabase.getInstance().getReference();
@@ -70,6 +74,7 @@ public class Card_Activity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //Get UID
+                if (FirebaseAuth.getInstance().getCurrentUser().getUid() == null) {return;}
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 Log.w(TAG, "uid: " + uid);
 
@@ -80,7 +85,10 @@ public class Card_Activity extends AppCompatActivity {
 
                 //Checks if there is any card
                 if(card == null) {
-                    themeTextView.setText("Der er ikke noget kort lige nu");
+                    themeTextView.setText("");
+                    participantsTextView.setText("Du har desværre ikke noget kort lige nu");
+                    deadlineTextView.setText("");
+                    goToScrapbookButton.setVisibility(View.INVISIBLE);
                     return;
                 }
 
