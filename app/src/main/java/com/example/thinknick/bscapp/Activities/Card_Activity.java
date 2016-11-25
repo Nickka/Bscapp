@@ -90,13 +90,13 @@ public class Card_Activity extends AppCompatActivity {
                 String card = dataSnapshot.child("users").child(uid).child("card").getValue(String.class);
 
 
-                //Checks if there is any card
-                if(card == null) {
+                //Checks if there is any card for the user. Either it doesnt exist or its not defined: ""
+                if(card == null || card.equals("")) {
                     themeTextView.setText("");
-                    participantsTextView.setText("Du har desværre ikke noget kort lige nu");
+                    participantsTextView.setText("Du har desværre ikke noget kort at udfylde lige nu");
                     deadlineTextView.setText("");
-                    goToScrapbookButton.setVisibility(View.INVISIBLE);
                     showProgress(false);
+                    goToScrapbookButton.clearAnimation();
                     return;
                 }
 
@@ -111,6 +111,19 @@ public class Card_Activity extends AppCompatActivity {
                     participants += child.getValue() + "\r\n";
                 }
                 participantsTextView.setText("Deltagere:\r\n" + participants);
+                goToScrapbookButton.setVisibility(View.VISIBLE);
+
+                /*Henter brugerens ID, og sætter friend = den anden i participants
+                String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                String selfuser = dataSnapshot.child("users").child(userid).child("friend").getValue(String.class);
+                if(participants != selfuser){
+                    System.out.println("")
+                }
+
+
+
+                // ---------- */
 
                 String deadline = dataSnapshot.child("Cards").child(card).child("deadline").getValue(String.class);
                 deadlineTextView.setText("Deadline: " + deadline);
@@ -171,21 +184,25 @@ public class Card_Activity extends AppCompatActivity {
                 }
             });
 
-
+/*
             goToScrapbookButton.setVisibility(show ? View.GONE : View.VISIBLE);
             goToScrapbookButton.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     goToScrapbookButton.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mProgressView.clearAnimation();
+
                 }
-            });
+            });*/
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    mProgressView.clearAnimation();
+
                 }
             });
 
@@ -193,6 +210,8 @@ public class Card_Activity extends AppCompatActivity {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.clearAnimation();
+
         }
     }
 }
