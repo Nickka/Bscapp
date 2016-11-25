@@ -42,14 +42,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
+                user = null;
 
-                if (user != null) {
-                    Intent Intent2 = new Intent(MainActivity.this, Card_Activity.class);
-                    startActivity(Intent2);
-                } else {
-                    Intent Intent2 = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(Intent2);
-                }
+                Intent Intent2 = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(Intent2);
             }
         });
     }

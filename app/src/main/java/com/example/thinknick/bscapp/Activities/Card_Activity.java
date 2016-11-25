@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import static com.example.thinknick.bscapp.R.id.deadlineTextView;
+import static com.example.thinknick.bscapp.R.id.goToScrapbookButton;
 import static com.example.thinknick.bscapp.R.id.subjectTextView;
 
 public class Card_Activity extends AppCompatActivity {
@@ -36,12 +37,17 @@ public class Card_Activity extends AppCompatActivity {
     private View mProgressView;
     private Button goToScrapbookButton;
 
+    private Button goToScrapbookButton;
+    private  Button seeYouCard;
+
+    ValueEventListener postListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
         goToScrapbookButton = (Button) findViewById(R.id.goToScrapbookButton);
-        Button seeYouCard = (Button) findViewById(R.id.recievedSBb);
+        seeYouCard = (Button) findViewById(R.id.recievedSBb);
 
         //Get a ref to the whole database
         mPostReference = FirebaseDatabase.getInstance().getReference();
@@ -72,10 +78,11 @@ public class Card_Activity extends AppCompatActivity {
         super.onStart();
         showProgress(true);
 
-        ValueEventListener postListener = new ValueEventListener() {
+        postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //Get UID
+                if (FirebaseAuth.getInstance().getCurrentUser().getUid() == null) {return;}
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 Log.w(TAG, "uid: " + uid);
 
@@ -86,7 +93,10 @@ public class Card_Activity extends AppCompatActivity {
 
                 //Checks if there is any card
                 if(card == null) {
-                    themeTextView.setText("Der er ikke noget kort lige nu");
+                    themeTextView.setText("");
+                    participantsTextView.setText("Du har desværre ikke noget kort lige nu");
+                    deadlineTextView.setText("");
+                    goToScrapbookButton.setVisibility(View.INVISIBLE);
                     return;
                 }
 
@@ -117,7 +127,14 @@ public class Card_Activity extends AppCompatActivity {
                 // ...
             }
         };
-        mPostReference.addValueEventListener(postListener);
+        mPostReference.addListenerForSingleValueEvent(postListener);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        mPostReference.removeEventListener(postListener);
+        Log.w(TAG, "Eventlistener on card is removed");
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
