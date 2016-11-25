@@ -18,7 +18,13 @@
         android:layout_centerHorizontal="true"
         android:layout_width="500dp"
         android:layout_height="650dp">
-
+        <ProgressBar
+            android:id="@+id/card_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone" />
         <Button
             android:text="@string/fillCardString"
             android:layout_width="match_parent"
@@ -67,6 +73,7 @@
             android:textColor="@color/bscAppSecondaryTextColor"/>
 
     </RelativeLayout>
+
 
     <Button
         android:text="Se dit kort!"

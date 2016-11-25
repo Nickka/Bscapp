@@ -1,17 +1,23 @@
 package com.example.thinknick.bscapp.Activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.thinknick.bscapp.R;
@@ -57,6 +63,9 @@ public class RecievedSB extends AppCompatActivity {
     private String userid;
     private String card;
     private String textpath;
+    private View mProgressView;
+    private ImageView myImage;
+    private LinearLayout lLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +73,10 @@ public class RecievedSB extends AppCompatActivity {
         setContentView(R.layout.activity_recieved_sb);
         mPostReference = FirebaseDatabase.getInstance().getReference();
         recievedCardTextView = (TextView) findViewById(R.id.recievedCardTextView);
+        mProgressView = findViewById(R.id.progress);
+        myImage = (ImageView) findViewById(R.id.recievedCardImageView);
+        lLayout =  (LinearLayout) findViewById(R.id.recievedCardLinearLayout);
+
 
     }
     @Override
@@ -74,6 +87,7 @@ public class RecievedSB extends AppCompatActivity {
             return;
         }
         userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        showProgress(true);
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -141,23 +155,27 @@ public class RecievedSB extends AppCompatActivity {
     // Eneste måde vi kan få billedet i activityen, der kan ikke bruges en service til dette umiddelbart da eneste måde er at sætte stien til billedet, men stien bliver lavet og givet tilbage til activityen
     // før at billedet er downloadet, hvilket bare giver et tomt element. Så backend kaldet er smidt i denne metode. It works... 6 timer spildt.
     public void getImage() throws IOException{
-            StorageReference islandRef = storageRef.child("/userimages/" + friendpicpath + "/" + friendpicpath);
+
+        StorageReference islandRef = storageRef.child("/userimages/" + friendpicpath + "/" + friendpicpath);
             localFile = File.createTempFile("images", ".jpg");
             path1 = localFile.getAbsolutePath();
 
             islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
                     Log.d(TAG, "worked buddy");
                     Log.d(TAG, path1);
                     File imgFile = new File(path1);
                     if(imgFile.exists()){
                         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
-                        ImageView myImage = (ImageView) findViewById(R.id.recievedCardImageView);
 
                         myImage.setImageBitmap(myBitmap);
                     }
+                    showProgress(false);
+
                 }
 
             }).addOnFailureListener(new OnFailureListener() {
@@ -168,4 +186,45 @@ public class RecievedSB extends AppCompatActivity {
             });
 
         }
+
+    //FIXER DET HER, SKAL HA FAT I MPROGRESSVIEW
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            recievedCardTextView.setVisibility(show ? View.GONE : View.VISIBLE);
+            recievedCardTextView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    recievedCardTextView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+            lLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+            lLayout.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    lLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
 }

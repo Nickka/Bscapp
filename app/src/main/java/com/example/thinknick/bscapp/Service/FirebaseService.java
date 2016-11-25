@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -111,6 +112,7 @@ public class FirebaseService extends IntentService {
                 try {
                     getImageFromPath();
                     Log.d(TAG, "Starter DL");
+                    Toast.makeText(FirebaseService.this, "Sender billed", Toast.LENGTH_SHORT).show();
 
                 }
                 catch(IOException e)
@@ -136,9 +138,10 @@ public class FirebaseService extends IntentService {
             Bitmap bitmap = BitmapFactory.decodeStream(this.openFileInput("myImage"));
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);
             byte[] data = baos.toByteArray();
             UploadTask uploadTask = imageRef.putBytes(data);
+            broadcastIntent(null); //SKULLE GERNE LIGGES I ONSUCCES LIDT LÆNGERE NEDE :(
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
@@ -149,7 +152,7 @@ public class FirebaseService extends IntentService {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     System.out.println("helt ok");
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    Toast.makeText(FirebaseService.this, "Card uploaded!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FirebaseService.this, "Scrapbook uploaded!", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -163,8 +166,11 @@ public class FirebaseService extends IntentService {
         catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
+    }
+    public void broadcastIntent(View view){
+        Intent intent = new Intent();
+        intent.setAction("com.example.thinknick.bscapp.Service"); sendBroadcast(intent);
+
     }
     public void getUser(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

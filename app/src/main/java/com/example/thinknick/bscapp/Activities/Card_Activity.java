@@ -1,6 +1,10 @@
 package com.example.thinknick.bscapp.Activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,12 +33,14 @@ public class Card_Activity extends AppCompatActivity {
     private TextView themeTextView;
     private TextView participantsTextView;
     private TextView deadlineTextView;
+    private View mProgressView;
+    private Button goToScrapbookButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
-        Button goToScrapbookButton = (Button) findViewById(R.id.goToScrapbookButton);
+        goToScrapbookButton = (Button) findViewById(R.id.goToScrapbookButton);
         Button seeYouCard = (Button) findViewById(R.id.recievedSBb);
 
         //Get a ref to the whole database
@@ -43,7 +49,7 @@ public class Card_Activity extends AppCompatActivity {
         themeTextView = (TextView) findViewById(R.id.subjectTextView);
         participantsTextView = (TextView) findViewById(R.id.participantsTextView);
         deadlineTextView = (TextView) findViewById(R.id.deadlineTextView);
-
+        mProgressView = findViewById(R.id.card_progress);
         goToScrapbookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +70,8 @@ public class Card_Activity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        showProgress(true);
+
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -95,16 +103,79 @@ public class Card_Activity extends AppCompatActivity {
 
                 String deadline = dataSnapshot.child("Cards").child(card).child("deadline").getValue(String.class);
                 deadlineTextView.setText("Deadline: " + deadline);
+                showProgress(false);
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                showProgress(false);
+                themeTextView.setText("Der er sket en fejl! Prøv igen senere, eller kontakt support");
+
                 // ...
             }
         };
         mPostReference.addValueEventListener(postListener);
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            participantsTextView.setVisibility(show ? View.GONE : View.VISIBLE);
+            participantsTextView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    participantsTextView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+            themeTextView.setVisibility(show ? View.GONE : View.VISIBLE);
+            themeTextView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    themeTextView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+            deadlineTextView.setVisibility(show ? View.GONE : View.VISIBLE);
+            deadlineTextView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    deadlineTextView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+
+            goToScrapbookButton.setVisibility(show ? View.GONE : View.VISIBLE);
+            goToScrapbookButton.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    goToScrapbookButton.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
 }
 

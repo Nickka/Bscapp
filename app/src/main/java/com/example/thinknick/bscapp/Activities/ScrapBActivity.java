@@ -1,9 +1,17 @@
 package com.example.thinknick.bscapp.Activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.bluetooth.le.ScanRecord;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -42,6 +50,12 @@ public class ScrapBActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String TAG;
+    private View mProgressView;
+    private IntentFilter filter1;
+
+    public ScrapBActivity(){
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +66,11 @@ public class ScrapBActivity extends AppCompatActivity {
         changeView = findViewById(R.id.vButton);
         editText = (EditText)findViewById(R.id.editText);
         takePic = findViewById(R.id.button3);
+        mProgressView = findViewById(R.id.sb_progress);
+
+        filter1 = new IntentFilter("com.example.thinknick.bscapp.Service");
+        registerReceiver(myReceiver, filter1);
+
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,12 +151,13 @@ public class ScrapBActivity extends AppCompatActivity {
                 returnImage2();
                 mImageView = (ImageView) findViewById(imageView2);
                 mImageView.setImageBitmap(bitmap);
-                mImageView.setRotation(180);
+                mImageView.setRotation(90);
             }
             break;
         }
     }
     public void sendToFB(){
+
 
         Intent intent = new Intent(this, FirebaseService.class);
         Bundle mBundle = new Bundle();
@@ -145,6 +165,7 @@ public class ScrapBActivity extends AppCompatActivity {
         mBundle.putString("FBServiceTxt", text);
         intent.putExtras(mBundle);
         this.startService(intent);
+        showProgress(true);
     }
     public void getUser(){
 
@@ -162,4 +183,71 @@ public class ScrapBActivity extends AppCompatActivity {
             }
         };
     }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            editText.setVisibility(show ? View.GONE : View.VISIBLE);
+            editText.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    editText.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+            takePic.setVisibility(show ? View.GONE : View.VISIBLE);
+            takePic.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    takePic.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            changeView.setVisibility(show ? View.GONE : View.VISIBLE);
+            changeView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    changeView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equalsIgnoreCase("com.example.thinknick.bscapp.Service")) {
+
+                Intent goback = new Intent(ScrapBActivity.this, Card_Activity.class);
+                startActivity(goback);
+                Toast.makeText(ScrapBActivity.this, "Scrapbook uploaded!", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+        };
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(myReceiver);
+    }
+
+
 }

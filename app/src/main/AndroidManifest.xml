@@ -96,6 +96,8 @@
             android:name=".Service.DownloadPicService"
             android:enabled="true"
             android:exported="true"></service>
+
+
     </application>
 
 </manifest>
