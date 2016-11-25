@@ -66,6 +66,7 @@ public class RecievedSB extends AppCompatActivity {
     private View mProgressView;
     private ImageView myImage;
     private LinearLayout lLayout;
+    private TextView senderText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +74,12 @@ public class RecievedSB extends AppCompatActivity {
         setContentView(R.layout.activity_recieved_sb);
         mPostReference = FirebaseDatabase.getInstance().getReference();
         recievedCardTextView = (TextView) findViewById(R.id.recievedCardTextView);
+
         mProgressView = findViewById(R.id.progress);
         myImage = (ImageView) findViewById(R.id.recievedCardImageView);
         lLayout =  (LinearLayout) findViewById(R.id.recievedCardLinearLayout);
+
+       senderText = (TextView) findViewById(R.id.senderTextView);
 
 
     }
@@ -90,17 +94,42 @@ public class RecievedSB extends AppCompatActivity {
         showProgress(true);
 
         ValueEventListener postListener = new ValueEventListener() {
+            public String senderTextpath2;
+            public String senderTextpath1;
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
 
+
                 friendpicpath = dataSnapshot.child("users").child(userid).child("friend").getValue(String.class)+
                         dataSnapshot.child("users").child(userid).child("card").getValue(String.class); // = AkdjkaJLJDAjakljdlad+card
                 textpath = dataSnapshot.child("SB").child(friendpicpath).child("text").getValue(String.class); // = SB / usercard / text
-                CardService cid = dataSnapshot.getValue(CardService.class);
+
+                //Tjekker om der er lavet et kort
+                if(textpath == null || friendpicpath == null){
+                    showProgress(false);
+                    recievedCardTextView.setVisibility(View.GONE);
+                    myImage.setVisibility(View.GONE);
+                    senderText.setText("Du har endnu ikke modtaget et kort.");
+                    return;
+                }
+                //Tjekker om der overhovedet er tildelt et kort til deltageren.
+                if(card == null){
+                    showProgress(false);
+                    recievedCardTextView.setVisibility(View.GONE);
+                    myImage.setVisibility(View.GONE);
+                    senderText.setText("Du er ikke tildelt et kort. Kontakt venligst support");
+                    return;
+                }
+
                 recievedCardTextView.setText(textpath);
-                System.out.println(textpath);
+                senderTextpath1 = dataSnapshot.child("users").child(userid).child("friend").getValue(String.class);
+                senderTextpath2 = dataSnapshot.child("users").child(senderTextpath1).child("username").getValue(String.class);
+                senderText.setText("Afsender: " + senderTextpath2);
+
+
                 try {
                     getImage();
                 } catch (IOException e) {
@@ -113,6 +142,8 @@ public class RecievedSB extends AppCompatActivity {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
                 // ...
+                showProgress(false);
+                senderText.setText("Der skete en fejl. :( Prøv igen, eller kontakt support teamet.");
             }
         };
         mPostReference.addValueEventListener(postListener);

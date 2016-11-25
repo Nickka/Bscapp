@@ -45,18 +45,35 @@
             android:layout_marginBottom="32dp"
             android:textColor="@color/bscAppSecondaryTextColor"/>
 
-        <Button android:id="@+id/sButton"
+        <Button
+            android:id="@+id/sButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tryk her for at starte!"
+            android:clickable="true"
+            android:padding="16dp"
+            android:textSize="18sp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/bscAppPrimaryTextColor" />
+
+        <Button android:id="@+id/cardButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tryk her for at starte!"
+                android:text="SE DIT MODTAGET KORT!"
                 android:clickable="true"
                 android:padding="16dp"
                 android:textSize="18sp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:textColor="@color/bscAppPrimaryTextColor"/>
+            android:textColor="@color/bscAppPrimaryTextColor"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="7dp"
+            android:elevation="0dp"
+            android:layout_marginTop="50px" />
 
     </LinearLayout>
 

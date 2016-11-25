@@ -17,11 +17,12 @@
         android:background="@drawable/layout_bg"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:padding="50dp"
+        android:padding="20dp"
         android:layout_width="600dp"
         android:id="@+id/recievedCardLinearLayout"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp">
+        android:layout_marginTop="100dp"
+        android:weightSum="1">
 
         <TextView
             android:text="Afsender: Lone"
@@ -29,7 +30,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/senderTextView"
             android:textSize="24sp"
-            android:textColor="@color/bscAppSecondaryTextColor"/>
+            android:textColor="@color/bscAppSecondaryTextColor"
+            android:paddingBottom="55px" />
 
         <ImageView
             android:layout_gravity="center_horizontal"
@@ -39,12 +41,13 @@
             android:layout_height="500dp" />
 
         <TextView
-            android:text='"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."'
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="131dp"
             android:id="@+id/recievedCardTextView"
             android:layout_marginTop="16dp"
-            android:textColor="@color/bscAppSecondaryTextColor"/>
+            android:textColor="@color/bscAppSecondaryTextColor"
+            android:textSize="20sp"
+            android:layout_weight="0.17" />
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progress"

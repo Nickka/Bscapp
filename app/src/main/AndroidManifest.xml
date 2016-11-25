@@ -59,10 +59,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".Activities.ScrapBActivity">
+        <activity android:name=".Activities.ScrapBActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.thinknick.bscapp.Activities.Card_Activity" />
+
         </activity>
         <activity android:name=".Activities.RetiredActivities.SendActivity" />
         <activity android:name=".Activities.RetiredActivities.OldCardActivity" />
@@ -81,7 +83,11 @@
         <activity android:name=".Activities.RecardActivity" />
         <activity
             android:name=".Activities.RecievedSB"
-            android:exported="true" />
+            android:exported="true">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.example.thinknick.bscapp.Activities.Card_Activity" />
+        </activity>
 
         <service
             android:name=".Service.NotificationService"

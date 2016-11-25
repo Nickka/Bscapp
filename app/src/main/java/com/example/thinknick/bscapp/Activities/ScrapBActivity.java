@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -44,7 +45,8 @@ public class ScrapBActivity extends AppCompatActivity {
     private String uid;
     private String text;
     private ImageView mImageView;
-    View changeView, takePic;
+    View changeView;
+    Button takePic;
     public EditText editText;
     Bitmap bitmap;
     private FirebaseAuth mAuth;
@@ -65,7 +67,7 @@ public class ScrapBActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scrapb);
         changeView = findViewById(R.id.vButton);
         editText = (EditText)findViewById(R.id.editText);
-        takePic = findViewById(R.id.button3);
+        takePic = (Button) findViewById(R.id.button3);
         mProgressView = findViewById(R.id.sb_progress);
 
         filter1 = new IntentFilter("com.example.thinknick.bscapp.Service");
@@ -152,6 +154,8 @@ public class ScrapBActivity extends AppCompatActivity {
                 mImageView = (ImageView) findViewById(imageView2);
                 mImageView.setImageBitmap(bitmap);
                 mImageView.setRotation(90);
+                takePic.setText("TAG NYT BILLED");
+
             }
             break;
         }
@@ -166,6 +170,8 @@ public class ScrapBActivity extends AppCompatActivity {
         intent.putExtras(mBundle);
         this.startService(intent);
         showProgress(true);
+        Toast.makeText(this, "Sammensætter og sender kort!", Toast.LENGTH_SHORT).show();
+        mImageView.setVisibility(View.INVISIBLE);
     }
     public void getUser(){
 
@@ -246,6 +252,7 @@ public class ScrapBActivity extends AppCompatActivity {
         };
     @Override
     public void onDestroy() {
+        super.onDestroy();
         unregisterReceiver(myReceiver);
     }
 
