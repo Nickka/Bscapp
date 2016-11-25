@@ -246,6 +246,7 @@ public class ScrapBActivity extends AppCompatActivity {
         };
     @Override
     public void onDestroy() {
+        super.onDestroy();
         unregisterReceiver(myReceiver);
     }
 

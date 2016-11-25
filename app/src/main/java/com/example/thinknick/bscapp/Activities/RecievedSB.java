@@ -66,6 +66,7 @@ public class RecievedSB extends AppCompatActivity {
     private View mProgressView;
     private ImageView myImage;
     private LinearLayout lLayout;
+    private TextView senderText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,8 @@ public class RecievedSB extends AppCompatActivity {
         mProgressView = findViewById(R.id.progress);
         myImage = (ImageView) findViewById(R.id.recievedCardImageView);
         lLayout =  (LinearLayout) findViewById(R.id.recievedCardLinearLayout);
+
+       senderText = (TextView) findViewById(R.id.senderTextView);
 
 
     }
@@ -90,6 +93,9 @@ public class RecievedSB extends AppCompatActivity {
         showProgress(true);
 
         ValueEventListener postListener = new ValueEventListener() {
+            public String senderTextpath2;
+            public String senderTextpath1;
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
@@ -101,6 +107,11 @@ public class RecievedSB extends AppCompatActivity {
                 CardService cid = dataSnapshot.getValue(CardService.class);
                 recievedCardTextView.setText(textpath);
                 System.out.println(textpath);
+                senderTextpath1 = dataSnapshot.child("users").child(userid).child("friend").getValue(String.class);
+                senderTextpath2 = dataSnapshot.child("users").child(senderTextpath1).child("username").getValue(String.class);
+                senderText.setText("Afsender: " + senderTextpath2);
+
+
                 try {
                     getImage();
                 } catch (IOException e) {
