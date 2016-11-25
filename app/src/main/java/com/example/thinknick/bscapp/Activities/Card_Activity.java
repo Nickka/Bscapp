@@ -35,7 +35,6 @@ public class Card_Activity extends AppCompatActivity {
     private TextView participantsTextView;
     private TextView deadlineTextView;
     private View mProgressView;
-    private Button goToScrapbookButton;
 
     private Button goToScrapbookButton;
     private  Button seeYouCard;

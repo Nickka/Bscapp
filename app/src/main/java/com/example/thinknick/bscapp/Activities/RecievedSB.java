@@ -173,6 +173,8 @@ public class RecievedSB extends AppCompatActivity {
 
 
                         myImage.setImageBitmap(myBitmap);
+                        myImage.setRotation(90);
+
                     }
                     showProgress(false);
 
