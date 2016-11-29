@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.thinknick.bscapp.R;
 import com.example.thinknick.bscapp.Service.CardService;
@@ -100,6 +101,13 @@ public class RecievedSB extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
+                String check1 = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
+                String check2 = dataSnapshot.child("Cards").child(check1).child("activeCard").getValue(String.class);
+                if(check2 == null){
+                    return;
+
+                }
+                else if(check2.equals("false")){
                 card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
 
 
@@ -120,7 +128,7 @@ public class RecievedSB extends AppCompatActivity {
                     showProgress(false);
                     recievedCardTextView.setVisibility(View.GONE);
                     myImage.setVisibility(View.GONE);
-                    senderText.setText("Du er ikke tildelt et kort. Kontakt venligst support");
+                    senderText.setText("Du er endnu ikke tildelt et kort. Prøv igen senere.");
                     return;
                 }
 
@@ -134,6 +142,13 @@ public class RecievedSB extends AppCompatActivity {
                     getImage();
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+            }
+                else {
+                    myImage.setVisibility(View.GONE);
+                    senderText.setText("Du kan først se din vens kort når deadlinen er gået");
+                    showProgress(false);
+
                 }
             }
 

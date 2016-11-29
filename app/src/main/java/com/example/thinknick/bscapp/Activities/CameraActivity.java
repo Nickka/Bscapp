@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -45,7 +46,7 @@ public class CameraActivity extends Activity {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
+                Toast.makeText(this, "Noget gik galt! Prøv igen.", Toast.LENGTH_SHORT).show();
                 System.out.println("ERR CANNOT CREATE FILE");
             }
             // Continue only if the File was successfully created
