@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_fullscreen);
+        setContentView(R.layout.activity_main);
         View sButton = findViewById(R.id.sButton);
         View logoutButton = findViewById(R.id.button6);
         Button cardButton = (Button) findViewById(R.id.cardButton);

@@ -78,7 +78,7 @@
 
     <Button
         android:visibility="invisible"
-        android:text="Se dit kort!"
+        android:text="@string/se_dit_kort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

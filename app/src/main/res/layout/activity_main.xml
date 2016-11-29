@@ -16,7 +16,7 @@
          android:fitsSystemWindows. -->
 
     <Button
-        android:text="Log ud"
+        android:text="@string/log_ud"
         android:layout_height="wrap_content"
         android:id="@+id/button6"
         android:layout_width="75dp"
@@ -35,7 +35,7 @@
         android:layout_centerHorizontal="true">
 
         <TextView
-            android:text="Velkommen til!"
+            android:text="@string/velkommen_til"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView3"
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tryk her for at starte!"
+            android:text="@string/se_dit_nuværende_kort"
             android:clickable="true"
             android:padding="16dp"
             android:textSize="18sp"
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="SE DIT MODTAGET KORT!"
+                android:text="@string/se_dit_modtaget_kort"
                 android:clickable="true"
                 android:padding="16dp"
                 android:textSize="18sp"

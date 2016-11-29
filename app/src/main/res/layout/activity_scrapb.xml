@@ -86,7 +86,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Tryk for at sende"
+                        android:text="@string/tryk_for_at_sende"
                         android:textColor="@color/bscAppPrimaryTextColor"
                         android:clickable="true"
                         android:textColorLink="?attr/colorSwitchThumbNormal" />

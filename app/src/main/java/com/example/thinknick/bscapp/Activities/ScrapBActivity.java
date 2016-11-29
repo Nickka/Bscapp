@@ -244,7 +244,7 @@ public class ScrapBActivity extends AppCompatActivity {
 
                 Intent goback = new Intent(ScrapBActivity.this, Card_Activity.class);
                 startActivity(goback);
-                Toast.makeText(ScrapBActivity.this, "Scrapbook uploaded!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScrapBActivity.this, "Beskeden blev afsendt!", Toast.LENGTH_SHORT).show();
 
             }
         }

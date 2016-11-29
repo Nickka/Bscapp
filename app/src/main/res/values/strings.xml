@@ -7,22 +7,27 @@
 
     <!-- Strings related to login -->
     <string name="prompt_username"></string> <!-- Change to 'dit brugernavn' in runtime-->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Kodeord</string>
-    <string name="action_sign_in">Log ind!</string>
-    <string name="action_sign_in_short">Tilmeld dig!</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="signUpString">Registrér dig!</string>
+    <string name="prompt_email">Din email-adresse</string>
+    <string name="prompt_password">Dit kodeord</string>
+    <string name="action_sign_in">Log ind</string>
+    <string name="action_sign_in_short">Tilmeld dig</string>
+    <string name="error_invalid_email">Denne email-adresse er ikke korrekt</string>
+    <string name="error_invalid_password">Dette password er for kort</string>
+    <string name="error_incorrect_password">Dette password er ikke korrekt</string>
+    <string name="error_field_required">Dette felt er påkrævet</string>
+    <string name="permission_rationale">"Adgang til kontaktpersoner påkrævet"</string>
+    <string name="signUpString">Registrér dig</string>
     <!-- Strings related to card_activity -->
     <string name="subjectString">Emne:</string>
-    <string name="fillCardString">Udfyld Kort</string>
+    <string name="fillCardString">Udfyld kort her</string>
     <string name="participantsString">Deltagere:</string>
-    <string name="deadlineString">Deadline</string>
+    <string name="deadlineString">Deadline:</string>
+    <string name="se_dit_kort">Se dit kort her</string>
+    <string name="log_ud">Log ud</string>
+    <string name="velkommen_til">Hovedmenu</string>
+    <string name="se_dit_modtaget_kort">Se din modtagne besked</string>
+    <string name="password">Kodeord</string>
+    <string name="tryk_for_at_sende">Send din besked</string>
+    <string name="se_dit_nuværende_kort">Se dit nuværende kort</string>
 
 </resources>

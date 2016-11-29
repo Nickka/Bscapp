@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     setCurrentUserNextActivity();
-                    Toast.makeText(LoginActivity.this, "Sign in succesfull!",
+                    Toast.makeText(LoginActivity.this, "Det lykkedes at logge ind!",
                             Toast.LENGTH_SHORT).show();
                 } else {
                     // User is signed out
