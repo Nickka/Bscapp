@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     setCurrentUserNextActivity();
-                    Toast.makeText(LoginActivity.this, "Sign in succesful!",
+                    Toast.makeText(LoginActivity.this, "Sign in succesfull!",
                             Toast.LENGTH_SHORT).show();
                 } else {
                     // User is signed out
@@ -372,7 +372,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Intent toCard = new Intent(LoginActivity.this, Card_Activity.class);
+            Intent toCard = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(toCard);
 
         }
