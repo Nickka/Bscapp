@@ -31,6 +31,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -60,43 +62,13 @@ public class FirebaseService extends IntentService {
     private String text1;
     private String card;
     private String emailid;
-    private DatabaseReference mPostReference;
+
 
 
     public FirebaseService() {
         super("FirebaseService");
     }
 
-    /**
-     * Starts this service to perform action Foo with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    // TODO: Customize helper method
-    public static void startActionFoo(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, FirebaseService.class);
-        intent.setAction(ACTION_FOO);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
-        context.startService(intent);
-    }
-
-    /**
-     * Starts this service to perform action Baz with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    // TODO: Customize helper method
-    public static void startActionBaz(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, FirebaseService.class);
-
-        intent.setAction(ACTION_BAZ);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
-        context.startService(intent);
-    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -121,24 +93,59 @@ public class FirebaseService extends IntentService {
                 }
             } else if (id.equals("UL")) {
                 getUser();
-                upload2Firebase2();
 
 
             }
         }
     }
+    public void getUser(){
 
+      FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            mDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
+                    upload2Firebase2();
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                    // ...
+                }
+            });
+
+            if (user != null) {
+                for (UserInfo profile : user.getProviderData()) {
+                    // Id of the provider (ex: google.com)
+                    String providerId = profile.getProviderId();
+
+                    // UID specific to the provider
+                    emailid = profile.getUid();
+
+                    // Name, email address, and profile photo Url
+                    String name = profile.getDisplayName();
+                    String email = profile.getEmail();
+                }
+            }
+
+
+    }
 
 
 
     public void upload2Firebase2() {
-        StorageReference imageRef = storageRef.child("userimages/" + userid+card + "/" + userid+card);
 
+        StorageReference imageRef = storageRef.child("userimages/" + userid+card + "/" + userid+card);
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(this.openFileInput("myImage"));
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 5, baos);
             byte[] data = baos.toByteArray();
             UploadTask uploadTask = imageRef.putBytes(data);
             broadcastIntent(null); //SKULLE GERNE LIGGES I ONSUCCES LIDT LÆNGERE NEDE :(
@@ -151,7 +158,6 @@ public class FirebaseService extends IntentService {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     System.out.println("helt ok");
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     Toast.makeText(FirebaseService.this, "Scrapbook uploaded!", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -172,38 +178,7 @@ public class FirebaseService extends IntentService {
         intent.setAction("com.example.thinknick.bscapp.Service"); sendBroadcast(intent);
 
     }
-    public void getUser(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        });
-
-        if (user != null) {
-            for (UserInfo profile : user.getProviderData()) {
-                // Id of the provider (ex: google.com)
-                String providerId = profile.getProviderId();
-
-                // UID specific to the provider
-                 emailid = profile.getUid();
-
-                // Name, email address, and profile photo Url
-                String name = profile.getDisplayName();
-                String email = profile.getEmail();
-            }
-        }
-
-    }
 
 
     public void getImageFromPath() throws IOException {

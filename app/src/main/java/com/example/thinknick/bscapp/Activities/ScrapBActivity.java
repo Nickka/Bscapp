@@ -150,28 +150,52 @@ public class ScrapBActivity extends AppCompatActivity {
         switch (requestCode) {
 
             case (1): {
-                returnImage2();
-                mImageView = (ImageView) findViewById(imageView2);
-                mImageView.setImageBitmap(bitmap);
-                mImageView.setRotation(90);
-                takePic.setText("TAG NYT BILLED");
-
+                try {
+                    returnImage2();
+                    if (bitmap != null) {
+                        mImageView = (ImageView) findViewById(imageView2);
+                        mImageView.setImageBitmap(bitmap);
+                        mImageView.setRotation(90);
+                        takePic.setText("TAG NYT BILLED");
+                    }
+                    else {
+                        return;
+                    }
+                }
+                catch (NullPointerException e){
+                    recreate();
+                    Toast.makeText(this, "Husk at tage et billed", Toast.LENGTH_SHORT).show();
+                }
             }
             break;
         }
     }
     public void sendToFB(){
 
+        try {
+            if(bitmap != null) {
+                if(!text.equals("Beskriv dit billede")) {
+                    Intent intent = new Intent(this, FirebaseService.class);
+                    Bundle mBundle = new Bundle();
+                    mBundle.putString("FBservice", "UL");
+                    mBundle.putString("FBServiceTxt", text);
+                    intent.putExtras(mBundle);
+                    this.startService(intent);
+                    showProgress(true);
+                    Toast.makeText(this, "Sammensætter og sender kort!", Toast.LENGTH_SHORT).show();
+                    mImageView.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    Toast.makeText(this, "Husk at skrive en beskrivelse.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(this, "Husk at tage et billed!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (NullPointerException e){
 
-        Intent intent = new Intent(this, FirebaseService.class);
-        Bundle mBundle = new Bundle();
-        mBundle.putString("FBservice", "UL");
-        mBundle.putString("FBServiceTxt", text);
-        intent.putExtras(mBundle);
-        this.startService(intent);
-        showProgress(true);
-        Toast.makeText(this, "Sammensætter og sender kort!", Toast.LENGTH_SHORT).show();
-        mImageView.setVisibility(View.INVISIBLE);
+        }
     }
     public void getUser(){
 

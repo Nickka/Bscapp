@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/activity_recieved_sb"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context="com.example.thinknick.bscapp.Activities.RecievedSB"
-                android:background="@color/bscAppBackgroundColor">
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_recieved_sb"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.thinknick.bscapp.Activities.RecievedSB"
+    android:background="@color/bscAppBackgroundColor">
     <LinearLayout
         android:orientation="vertical"
         android:background="@drawable/layout_bg"
@@ -24,6 +23,11 @@
         android:layout_marginTop="100dp"
         android:weightSum="1">
 
+        <Table
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:weightSum="10">
         <TextView
             android:text="Afsender: "
             android:layout_width="match_parent"
@@ -31,7 +35,9 @@
             android:id="@+id/senderTextView"
             android:textSize="24sp"
             android:textColor="@color/bscAppSecondaryTextColor"
-            android:paddingBottom="15dp" />
+            android:paddingBottom="15dp"
+            android:layout_weight="5"
+            />
 
         <ImageView
             android:layout_gravity="center_horizontal"
@@ -42,6 +48,7 @@
             android:maxHeight="600dp"
             android:maxWidth="500dp"
             android:adjustViewBounds= "true"
+            android:layout_weight="5"
             />
 
         <TextView
@@ -51,7 +58,8 @@
             android:layout_marginTop="16dp"
             android:textColor="@color/bscAppSecondaryTextColor"
             android:textSize="20sp"
-            android:layout_weight="0.17" />
+            android:layout_weight="5" />
+        </Table>
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progress"
@@ -60,4 +68,4 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
-</RelativeLayout>
+</LinearLayout>
