@@ -72,7 +72,7 @@ public class RecievedSB extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recieved_sb);
+        setContentView(R.layout.);
         mPostReference = FirebaseDatabase.getInstance().getReference();
         recievedCardTextView = (TextView) findViewById(R.id.recievedCardTextView);
 
