@@ -31,6 +31,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -60,7 +62,7 @@ public class FirebaseService extends IntentService {
     private String text1;
     private String card;
     private String emailid;
-    private DatabaseReference mPostReference;
+
 
 
     public FirebaseService() {
@@ -91,56 +93,59 @@ public class FirebaseService extends IntentService {
                 }
             } else if (id.equals("UL")) {
                 getUser();
-                upload2Firebase2();
 
 
             }
         }
     }
     public void getUser(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
+      FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            mDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
+                    upload2Firebase2();
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                    // ...
+                }
+            });
+
+            if (user != null) {
+                for (UserInfo profile : user.getProviderData()) {
+                    // Id of the provider (ex: google.com)
+                    String providerId = profile.getProviderId();
+
+                    // UID specific to the provider
+                    emailid = profile.getUid();
+
+                    // Name, email address, and profile photo Url
+                    String name = profile.getDisplayName();
+                    String email = profile.getEmail();
+                }
             }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        });
 
-        if (user != null) {
-            for (UserInfo profile : user.getProviderData()) {
-                // Id of the provider (ex: google.com)
-                String providerId = profile.getProviderId();
-
-                // UID specific to the provider
-                emailid = profile.getUid();
-
-                // Name, email address, and profile photo Url
-                String name = profile.getDisplayName();
-                String email = profile.getEmail();
-            }
-        }
 
     }
 
 
 
     public void upload2Firebase2() {
-        String cardref = card;
 
-        StorageReference imageRef = storageRef.child("userimages/" + userid+cardref + "/" + userid+cardref);
+        StorageReference imageRef = storageRef.child("userimages/" + userid+card + "/" + userid+card);
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(this.openFileInput("myImage"));
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 5, baos);
             byte[] data = baos.toByteArray();
             UploadTask uploadTask = imageRef.putBytes(data);
             broadcastIntent(null); //SKULLE GERNE LIGGES I ONSUCCES LIDT LÆNGERE NEDE :(
@@ -153,7 +158,6 @@ public class FirebaseService extends IntentService {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     System.out.println("helt ok");
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     Toast.makeText(FirebaseService.this, "Scrapbook uploaded!", Toast.LENGTH_SHORT).show();
                 }
             });
