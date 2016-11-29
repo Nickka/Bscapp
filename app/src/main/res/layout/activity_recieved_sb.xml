@@ -25,12 +25,14 @@
         android:weightSum="1">
 
         <TextView
-            android:text="Afsender: Lone"
+            android:text="Afsender:"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/senderTextView"
+            android:gravity="center"
             android:textSize="24sp"
             android:textColor="@color/bscAppSecondaryTextColor"
+            android:layout_marginBottom="16dp"
             android:paddingBottom="55px" />
 
         <ImageView
@@ -46,6 +48,7 @@
             android:id="@+id/recievedCardTextView"
             android:layout_marginTop="16dp"
             android:textColor="@color/bscAppSecondaryTextColor"
+            android:gravity="center"
             android:textSize="20sp"
             android:layout_weight="0.17" />
     </LinearLayout>
