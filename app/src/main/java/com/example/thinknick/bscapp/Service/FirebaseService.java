@@ -104,7 +104,7 @@ public class FirebaseService extends IntentService {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-               // card2 = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
+                card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -133,20 +133,9 @@ public class FirebaseService extends IntentService {
 
 
     public void upload2Firebase2() {
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        });
-        StorageReference imageRef = storageRef.child("userimages/" + userid+card + "/" + userid+card);
+        String cardref = card;
 
+        StorageReference imageRef = storageRef.child("userimages/" + userid+cardref + "/" + userid+cardref);
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(this.openFileInput("myImage"));
 
