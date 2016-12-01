@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -77,6 +78,8 @@ public class ScrapBActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 editText.setText("");
+                ScrapBActivity.this.getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
             }
         });
         takePic.setOnClickListener(new View.OnClickListener() {
