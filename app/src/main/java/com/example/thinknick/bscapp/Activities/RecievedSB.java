@@ -141,6 +141,7 @@ public class RecievedSB extends AppCompatActivity {
 
                 try {
                     getImage();
+                   // for(int i; )
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -153,6 +154,7 @@ public class RecievedSB extends AppCompatActivity {
                 }
             }
 
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
@@ -162,7 +164,7 @@ public class RecievedSB extends AppCompatActivity {
                 senderText.setText("Der skete en fejl. :( Prøv igen, eller kontakt support teamet.");
             }
         };
-        mPostReference.addValueEventListener(postListener);
+        mPostReference.addListenerForSingleValueEvent(postListener);
 
         Intent intent = new Intent(this, DownloadPicService.class);
         this.startService(intent);

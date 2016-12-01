@@ -145,7 +145,7 @@ public class FirebaseService extends IntentService {
             Bitmap bitmap = BitmapFactory.decodeStream(this.openFileInput("myImage"));
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 5, baos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 3, baos);
             byte[] data = baos.toByteArray();
             UploadTask uploadTask = imageRef.putBytes(data);
             broadcastIntent(null); //SKULLE GERNE LIGGES I ONSUCCES LIDT LÆNGERE NEDE :(
