@@ -48,7 +48,7 @@ public class RecievedSB extends AppCompatActivity {
     private LoginActivity.UserLoginTask mAuthTask = null;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private static final String TAG = "Login";
+    private static final String TAG = "RECIEVEDSB";
     private DatabaseReference mPostReference;
     private TextView recievedCardTextView;
     private String path1;
@@ -212,7 +212,7 @@ public class RecievedSB extends AppCompatActivity {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                    Log.d(TAG, "worked buddy");
+                    Log.d(TAG, "BILLEDE HNETET!!!");
                     Log.d(TAG, path1);
                     File imgFile = new File(path1);
                     if(imgFile.exists()){
