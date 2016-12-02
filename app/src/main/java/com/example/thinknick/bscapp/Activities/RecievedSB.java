@@ -102,16 +102,19 @@ public class RecievedSB extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                String check1 = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
-                String check2 = dataSnapshot.child("Cards").child(check1).child("activeCard").getValue(String.class);
-                if(check2 == null){
-                    return;
-
-                }
-                else if(check2.equals("false")){
                 card = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
 
+                //String check1 = dataSnapshot.child("users").child(userid).child("card").getValue(String.class);
+                String check2 = dataSnapshot.child("Cards").child(card).child("activeCard").getValue(String.class);
+                if(card == null || card.equals("")){
+                    showProgress(false);
+                    recievedCardTextView.setVisibility(View.GONE);
+                    myImage.setVisibility(View.GONE);
+                    senderText.setText("Du er endnu ikke tildelt et kort. Prøv igen senere.");
+                    return;
+                }
 
+                else if(check2.equals("false")){
                 friendpicpath = dataSnapshot.child("users").child(userid).child("friend").getValue(String.class)+
                         dataSnapshot.child("users").child(userid).child("card").getValue(String.class); // = AkdjkaJLJDAjakljdlad+card
                 textpath = dataSnapshot.child("SB").child(friendpicpath).child("text").getValue(String.class); // = SB / usercard / text
@@ -125,13 +128,6 @@ public class RecievedSB extends AppCompatActivity {
                     return;
                 }
                 //Tjekker om der overhovedet er tildelt et kort til deltageren.
-                if(card == null){
-                    showProgress(false);
-                    recievedCardTextView.setVisibility(View.GONE);
-                    myImage.setVisibility(View.GONE);
-                    senderText.setText("Du er endnu ikke tildelt et kort. Prøv igen senere.");
-                    return;
-                }
 
                 recievedCardTextView.setText(textpath);
                 senderTextpath1 = dataSnapshot.child("users").child(userid).child("friend").getValue(String.class);
@@ -164,18 +160,18 @@ public class RecievedSB extends AppCompatActivity {
                 senderText.setText("Der skete en fejl. :( Prøv igen, eller kontakt support teamet.");
             }
         };
-        mPostReference.addListenerForSingleValueEvent(postListener);
-
+        mPostReference.addValueEventListener(postListener);
+/*
         Intent intent = new Intent(this, DownloadPicService.class);
         this.startService(intent);
-        this.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        this.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);*/
     }
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(mConnection);
+       // unbindService(mConnection);
     }
-    private ServiceConnection mConnection = new ServiceConnection() {
+   /* private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             // This is called when the connection with the service has been
@@ -199,7 +195,7 @@ public class RecievedSB extends AppCompatActivity {
             mService = null;
             mBound = false;
         }
-    };
+    };*/
 
     // Eneste måde vi kan få billedet i activityen, der kan ikke bruges en service til dette umiddelbart da eneste måde er at sætte stien til billedet, men stien bliver lavet og givet tilbage til activityen
     // før at billedet er downloadet, hvilket bare giver et tomt element. Så backend kaldet er smidt i denne metode. It works... 6 timer spildt.

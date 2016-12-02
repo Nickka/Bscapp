@@ -64,7 +64,7 @@
                 android:selectAllOnFocus="false"
                 android:fontFamily="sans-serif"
                 android:typeface="normal"
-                android:maxLength="140"
+                android:maxLength="250"
                 android:textStyle="normal|bold|italic"
                 android:textAlignment="center"
                 android:layout_height="150dp"
